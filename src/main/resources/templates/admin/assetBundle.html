@@ -117,5 +117,85 @@
         </div>
     </div>
 </div>
+<script>
+    function getSelectedServerRooms() {
+        const checkboxes = document.querySelectorAll('input[name="serverIds"]:checked');
+        const selectedRooms = [];
+        checkboxes.forEach(cb => {
+            selectedRooms.push(cb.value);
+        });
+        return selectedRooms;
+    }
+</script>
+
+<!-- The Modal Structure -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <h2 id="modalTitle"></h2>
+        <p id="modalMessage"></p>
+        <button id="modalConfirmBtn" class="button-primary">확인</button>
+    </div>
+</div>
+
+<style>
+    /* Modal styles */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more specific */
+        max-width: 500px;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        -webkit-animation-name: animatetop;
+        -webkit-animation-duration: 0.4s;
+        animation-name: animatetop;
+        animation-duration: 0.4s;
+        text-align: center;
+        border-radius: 8px;
+    }
+
+    /* Add Animation */
+    @-webkit-keyframes animatetop {
+        from {top: -300px; opacity: 0}
+        to {top: 0; opacity: 1}
+    }
+
+    @keyframes animatetop {
+        from {top: -300px; opacity: 0}
+        to {top: 0; opacity: 1}
+    }
+
+    .modal-content h2 {
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .modal-content p {
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+
+    .modal-content button {
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        border: none;
+    }
+</style>
 </body>
 </html>

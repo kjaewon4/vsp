@@ -34,8 +34,9 @@
     <div id="myModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <h2 id="modalTitle"></h2>
             <p id="modalMessage"></p>
+            <button id="modalConfirmBtn" class="button-primary">확인</button>
         </div>
     </div>
 
@@ -52,28 +53,30 @@
             })
             .then(response => {
                 if (response.ok) {
-                    return response.text(); // Get response as text
+                    return response.text().then(text => ({ status: 'success', message: text }));
                 } else {
-                    return response.text().then(text => { throw new Error(text); });
+                    return response.text().then(text => ({ status: 'error', message: text }));
                 }
             })
-            .then(message => {
-                showModal(message);
-                form.reset(); // Clear the form
+            .then(data => {
+                showModal(data.status, data.message);
+                if (data.status === 'success') {
+                    form.reset(); // Clear the form only on success
+                }
             })
             .catch(error => {
-                showModal(error.message);
+                showModal('error', '네트워크 오류 또는 서버 응답 없음: ' + error.message);
             });
         });
 
-        // Get the modal
+        // Get the modal elements
         var modal = document.getElementById("myModal");
+        var modalTitle = document.getElementById("modalTitle");
+        var modalMessage = document.getElementById("modalMessage");
+        var modalConfirmBtn = document.getElementById("modalConfirmBtn");
 
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
+        // When the user clicks on the confirm button, close the modal
+        modalConfirmBtn.onclick = function() {
             modal.style.display = "none";
         }
 
@@ -84,9 +87,17 @@
             }
         }
 
-        function showModal(message) {
-            document.getElementById('modalMessage').innerText = message;
-            modal.style.display = "block";
+        function showModal(status, message) {
+            if (status === 'success') {
+                modalTitle.innerText = "업로드 성공!";
+                modalMessage.innerText = message || "번들 업로드가 성공적으로 완료되었습니다.";
+                modal.style.borderColor = "#4CAF50"; // Green border for success
+            } else {
+                modalTitle.innerText = "업로드 실패!";
+                modalMessage.innerText = message || "번들 업로드 중 오류가 발생했습니다.";
+                modal.style.borderColor = "#f44336"; // Red border for error
+            }
+            modal.style.display = "flex"; // Use flex to center the modal
         }
     </script>
 </body>
