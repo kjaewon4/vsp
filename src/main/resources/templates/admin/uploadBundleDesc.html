@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head :: head"></head>
+<link rel="stylesheet" th:href="@{/css/uploadBundleDesc.css}" />
+
+<body>
+    <div th:replace="fragments/header :: header"></div>
+
+    <div class="container">
+        <h2>Upload Asset Bundle</h2>
+        <form id="uploadForm" action="/api/assetbundles/bundleUpload" method="post" enctype="multipart/form-data" class="upload-form">
+            <div class="form-group">
+                <label for="bundleName">Bundle Name:</label>
+                <input type="text" id="bundleName" name="bundleName" required>
+            </div>
+            <div class="form-group">
+                <label for="bundleTitle">Bundle Title:</label>
+                <input type="text" id="bundleTitle" name="bundleTitle" required>
+            </div>
+            <div class="form-group">
+                <label for="bundleDescription">Bundle Description:</label>
+                <textarea id="bundleDescription" name="bundleDescription" rows="5" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="file">Bundle File:</label>
+                <input type="file" id="file" name="file" required>
+            </div>
+            <button type="submit" class="submit-button">Upload Bundle</button>
+        </form>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text(); // Get response as text
+                } else {
+                    return response.text().then(text => { throw new Error(text); });
+                }
+            })
+            .then(message => {
+                showModal(message);
+                form.reset(); // Clear the form
+            })
+            .catch(error => {
+                showModal(error.message);
+            });
+        });
+
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function showModal(message) {
+            document.getElementById('modalMessage').innerText = message;
+            modal.style.display = "block";
+        }
+    </script>
+</body>
+</html>

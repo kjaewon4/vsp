@@ -29,7 +29,14 @@ public class AdminController {
     private final AdminService adminService;
     private final GameServerService gameServerService;
     
-    
+    @GetMapping("/uploadBundleDesc")
+    public String uploadBundleDesc(Authentication authentication) {
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+        if (!isAdmin) return "login";
+        return "admin/uploadBundleDesc";
+    }
+
 //    @GetMapping("/dashboard")
 //    public String dashboard(Authentication authentication, Model model) {
 //    	

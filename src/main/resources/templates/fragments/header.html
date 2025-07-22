@@ -18,6 +18,9 @@
                     <li sec:authorize="hasRole('ROLE_ADMIN')">
                         <a th:href="@{/api/assetbundles/bundleList}">Bundle 관리</a>
                     </li>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a th:href="@{/admin/uploadBundleDesc}">번들 등록 (설명 포함)</a>
+                    </li>
                 </ul>
             </nav>
         </div>

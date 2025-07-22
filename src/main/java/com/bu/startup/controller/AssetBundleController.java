@@ -77,6 +77,14 @@ public class AssetBundleController {
 	    @Value("${upload.path}")
 	    private String uploadPath;
 
+	/**
+	 * 단일 파일 + 설명 등록
+	 * @param file
+	 * @param bundleName
+	 * @param bundleTitle
+	 * @param bundleDescription
+	 * @return
+	 */
 	    @PostMapping("/bundleUpload")
 	    public ResponseEntity<String> uploadBundleDesc(@RequestParam("file") MultipartFile file,
 	                                               @RequestParam("bundleName") String bundleName,

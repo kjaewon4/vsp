@@ -60,6 +60,7 @@ public class AssetBundleService {
 
         // 파일 저장
         Files.createDirectories(pathW);
+//        Files.createDirectories(pathW.getParent());
         Files.copy(file.getInputStream(), pathW, StandardCopyOption.REPLACE_EXISTING);
 
         // DB 저장
