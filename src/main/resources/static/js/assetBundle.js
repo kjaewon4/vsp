@@ -1,8 +1,7 @@
-
-
-
 function toggleAll(source) {
+    console.log("toggleAll called with source:", source);
     const checkboxes = document.querySelectorAll('input[name="bundleIds"]');
+    console.log("Found checkboxes:", checkboxes);
     checkboxes.forEach(cb => cb.checked = source.checked);
 }
 
@@ -57,3 +56,26 @@ eventSource.onmessage = function(event) {
 eventSource.onerror = function(err) {
   console.error("SSE 에러", err);
 };
+
+function getSelectedServerRooms() {
+    const checkboxes = document.querySelectorAll('input[name="serverIds"]:checked');
+    const selectedRooms = [];
+    checkboxes.forEach(cb => {
+        selectedRooms.push(cb.value);
+    });
+    return selectedRooms;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOMContentLoaded fired.");
+    const selectAllBundlesCheckbox = document.getElementById('selectAllBundles');
+    if (selectAllBundlesCheckbox) {
+        console.log("selectAllBundlesCheckbox found.", selectAllBundlesCheckbox);
+        selectAllBundlesCheckbox.addEventListener('change', function() {
+            console.log("selectAllBundlesCheckbox changed.", this.checked);
+            toggleAll(this);
+        });
+    } else {
+        console.log("selectAllBundlesCheckbox not found.");
+    }
+});

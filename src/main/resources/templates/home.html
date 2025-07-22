@@ -7,10 +7,24 @@
 
 <header th:replace="fragments/header :: commonHeader"></header>
 
-<h2>Welcome, <span th:text="${username}"></span>!</h2>
-<a th:href="@{/logout}">Logout</a>
-|
-<a th:href="@{/api/assetbundles/bundleList}">AssetBundle</a>
+<div class="container mt-5">
+    <div class="title-section">
+        <h2>창업 아이템 존</h2>
+        <p>다양한 창업 아이템을 둘러보세요</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4" th:each="bundle : ${assetBundles}">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><a th:href="@{/api/assetbundles/{id}(id=${bundle.id})}" th:text="${bundle.bundleTitle}">Bundle Title</a></h5>
+                    <p class="card-text" th:text="${bundle.bundleDescription}">Bundle Description</p>
+                    <p class="card-text"><small class="text-muted">Uploaded: <span th:text="${#temporals.format(bundle.uploadedAt, 'yyyy-MM-dd HH:mm')}"></span></small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

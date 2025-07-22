@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.bu.startup.dto.UserRegisterDto;
 import com.bu.startup.service.UserService;
 
+import com.bu.startup.service.AssetBundleService;
 import jakarta.validation.Valid;
 
 @Controller
@@ -20,6 +21,9 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AssetBundleService assetBundleService;
 
     @GetMapping("/login")
     public String login() {
@@ -56,6 +60,7 @@ public class AuthController {
     @GetMapping("/home")
     public String home(Model model, Principal principal) {
         model.addAttribute("username", principal.getName());
+        model.addAttribute("assetBundles", assetBundleService.getAllBundles());
         return "home";
     }
 }

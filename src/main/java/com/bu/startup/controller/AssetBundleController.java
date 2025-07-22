@@ -41,8 +41,13 @@ import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Flux;
 import org.springframework.http.MediaType;
-import java.time.Duration;
-import java.time.LocalTime;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.bu.startup.entity.User;
+import com.bu.startup.service.LikeService;
+import com.bu.startup.service.PostService;
+import com.bu.startup.service.UserService;
 
 @RestController
 @RequestMapping("/api/assetbundles")
@@ -67,6 +72,9 @@ public class AssetBundleController {
 	 private final AssetBundleRepository assetBundleRepository;
 	 private final AssetBundleService assetBundleService;
 	 private final ServerService serverService;
+	 private final LikeService likeService;
+	 private final PostService postService;
+	 private final UserService userService;
 	 
 	 private final RoomService roomService;
 	 private final GameServerService gameServerService;
@@ -311,7 +319,7 @@ public class AssetBundleController {
 	    	
 	    	
 	    	List<AppInfo> appInfoList = IntStream.range(0, VirtualStartUpApplication.PhotonAppID.size())
-	    			 .mapToObj(index -> new AppInfo(String.valueOf(index), VirtualStartUpApplication.PhotonAppID.get(index)))
+	    				 .mapToObj(index -> new AppInfo(String.valueOf(index), VirtualStartUpApplication.PhotonAppID.get(index)))
 	                 .collect(Collectors.toList());
 	    	
 	    	mav.addObject("appidList", appInfoList );
@@ -340,6 +348,46 @@ public class AssetBundleController {
 	        return mav;
 	    }
 
+	    @GetMapping("/bundleListOnly")
+	    public ModelAndView listBundlesOnly(Authentication authentication) {
+	        if(authentication == null) return new ModelAndView("login");
+	        
+	        ModelAndView mav = new ModelAndView("/bundleListOnly");
+	        mav.addObject("assetBundles", assetBundleService.getAllBundles());
+	        return mav;
+	    }
+	    
+	    @GetMapping("/{id}")
+	    public ModelAndView getBundleDetail(@PathVariable Long id, Authentication authentication) {
+	        ModelAndView mav = new ModelAndView("bundleDetail");
+	        AssetBundleEntity bundle = assetBundleService.getBundleById(id)
+	                .orElseThrow(() -> new IllegalArgumentException("AssetBundle not found"));
+	        mav.addObject("bundle", bundle);
+
+	        if (authentication != null && authentication.isAuthenticated()) {
+	            User currentUser = userService.getUserByUsername(authentication.getName());
+	            if (currentUser != null) {
+	                mav.addObject("isLiked", likeService.isLiked(id, currentUser));
+	            }
+	        }
+	        mav.addObject("likeCount", likeService.getLikeCount(id));
+	        postService.getPostByAssetBundleId(id).ifPresent(post -> mav.addObject("post", post));
+	        return mav;
+	    }
+
+	    @PostMapping("/{id}/like")
+	    public ResponseEntity<Void> toggleLike(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+	        if (userDetails == null) {
+	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	        }
+	        User currentUser = userService.getUserByUsername(userDetails.getUsername());
+	        if (currentUser == null) {
+	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	        }
+	        likeService.toggleLike(id, currentUser);
+	        return ResponseEntity.ok().build();
+	    }
+
 	    @PostMapping("/killServer")
 	    public ResponseEntity<Void> killServer(@RequestParam(value = "serverIds", required = false) List<String> roomNames)
 	    {
@@ -359,6 +407,7 @@ public class AssetBundleController {
 			
 	    	return getRedirect("/api/assetbundles/bundleList"); // 302 Redirect
 	    }
+
 	    @PostMapping("/deleteSelected")
 	    public  ResponseEntity<Void> deleteSelected(@RequestParam(value = "bundleIds", required = false) List<Long> bundleIds) {
 	    	
@@ -371,6 +420,7 @@ public class AssetBundleController {
 	        
 	        return getRedirect("/api/assetbundles/bundleList"); // 302 Redirect
 	    }
+
 	    @PostMapping("/findSelectedWithServer")
 	    public  ResponseEntity<Void> findSelected(
 	    		@RequestParam(value = "bundleIds", required = false) List<Long> bundleIds,
