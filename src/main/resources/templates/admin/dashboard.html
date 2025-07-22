@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    <script th:src="@{/js/admin.js}"></script>
+</head>
+<body>
+<h1>Admin Dashboard</h1>
+<p th:text="'Server Status: ' + ${serverStatus}" />
+
+<form method="post" th:action="@{/admin/server/start}">
+    <button type="submit">Start Server</button>
+</form>
+<form method="post" th:action="@{/admin/server/restart}">
+    <button type="submit">Restart Server</button>
+</form>
+
+<h2>Rooms</h2>
+<ul>
+    <li th:each="room : ${rooms}">
+        <span th:text="${room.name}"></span>
+        <form method="post" th:action="@{/admin/room/update}">
+            <input type="hidden" name="roomId" th:value="${room.id}" />
+            <input type="text" name="roomName" placeholder="New Room Name" />
+            <button type="submit">Update</button>
+        </form>
+    </li>
+</ul>
+
+<hr/>
+
+<h2>Unity Game Servers</h2>
+
+<!-- 서버 등록 폼 -->
+<form method="post" th:action="@{/admin/server/register}">
+	<div class="form-group">
+	    <label class="form-label">서버 이름:</label>
+	    <input type="text" name="serverName" class="input-text" required />
+	</div>
+	
+	<div class="form-group">
+	    <label class="form-label">실행 경로:</label>
+		<div id="dropZone" draggable="true" class="drop-zone">
+			여기로 드래그 하세요 또는 클릭
+		</div>
+	    <input type="text" id="executablePath" name="executablePath" class="input-text" placeholder="전체경로 입력" required />
+	</div>
+	
+	<div class="form-group">
+	    <label class="form-label">기본 파라미터:</label>
+	    <input type="text" name="defaultParams" class="input-text" value="-username=admin -mode=admin" />
+	</div>
+    <button type="submit">서버 등록</button>
+</form>
+
+<!-- 등록된 서버 목록 -->
+<table>
+    <thead>
+        <tr>
+            <th>이름</th>
+            <th>실행 경로</th>
+            <th>파라미터</th>
+            <th>실행</th>
+            <th>삭제</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="server : ${gameServers}">
+            <td th:text="${server.name}"></td>
+            <td th:text="${server.executablePath}"></td>
+            <td th:text="${server.defaultParams}"></td>
+            <td>
+                <form method="post" th:action="@{/admin/server/run}">
+                    <input type="hidden" name="id" th:value="${server.id}" />
+                    <button type="submit">실행</button>
+                </form>
+            </td>
+            <td>
+                <form method="post" th:action="@{/admin/server/delete}">
+                    <input type="hidden" name="id" th:value="${server.id}" />
+                    <button type="submit">삭제</button>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+</body>
+</html>

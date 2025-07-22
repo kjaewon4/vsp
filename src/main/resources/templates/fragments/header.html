@@ -1,0 +1,11 @@
+<!-- templates/fragments/header.html -->
+<div th:fragment="commonHeader">
+    <header class="vsp-header">
+        <div class="vsp-logo">
+            <a th:href="@{/}">VSP</a>
+        </div>
+        <div class="vsp-actions">
+            <a th:href="@{/login}" class="login-button">로그인</a>
+        </div>
+    </header>
+</div>

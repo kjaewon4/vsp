@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AssetBundle 관리</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    <script th:src="@{/js/admin.js}"></script>
+	<script th:src="@{/js/assetBundle.js}"></script>
+</head>
+<body>
+<h1>AssetBundle 관리 페이지</h1>
+
+<form method="post" th:action="@{/api/assetbundles/deleteSelected}">
+    <table>
+        <thead>
+            <tr>
+                <th><input type="checkbox" onclick="toggleAll(this)" /></th>
+                <th>ID</th>
+                <th>번들 이름</th>
+                <th>파일 경로-윈도우</th>
+				<th>파일 경로-안드로이드</th>
+                <th>번들 타이틀</th>
+                <th>번들 설명</th>
+                <th>업로드 시간</th>
+<!--                <th>다운로드</th>-->
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="bundle : ${assetBundles}">
+                <td><input type="checkbox" name="bundleIds" th:value="${bundle.id}" /></td>
+                <td th:text="${bundle.id}"></td>
+                <td th:text="${bundle.bundleName}"></td>
+                <td th:text="${bundle.filePath[0]}"></td>
+                <td th:text="${bundle.filePath[1]}"></td>
+                <td th:text="${bundle.bundleTitle}"></td>
+                <td th:text="${bundle.bundleDescription}"></td>
+                <td th:text="${bundle.uploadedAt}"></td>
+<!--                <td>-->
+<!--                    <a th:href="@{/admin/assetbundle/downloadBundleById/{id}(id=${bundle.id})}" target="_blank">다운로드</a>-->
+<!--                </td>-->
+            </tr>
+        </tbody>
+    </table>
+    <button type="submit">선택 삭제</button>
+
+	
+</form>
+
+		<table>
+            <thead>
+                <tr>
+                    <th>선택</th>
+					<th>ID</th>
+                    <th>AppID</th>
+<!--                    <th>애플리케이션 이름</th>-->
+<!--                    <th>설명</th>-->
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="list : ${appidList}">
+                    <td>
+                        <input type="radio" name="appIds" th:value="${list.num}" />
+                    </td>
+                    <td th:text="${list.num}"></td>
+                    <td th:text="${list.appid}"></td>
+<!--                    <td th:text="${app.description}"></td>-->
+                </tr>
+            </tbody>
+        </table>
+		
+		
+<form method="post" th:action="@{/api/assetbundles/findSelectedWithServer}">    
+	<div id="selectedBundles"></div> <!-- 체크된 항목을 여기에 복사 -->
+	<div id="selectedAppid"></div> <!-- 체크된 항목을 여기에 복사 -->
+	<label for="serverParam">서버파라미터 </label>
+    <input type="text" id="serverParam" name="serverParam" th:value="${params}"  />
+    <button type="submit" onclick="return copySelectedBundles()">서버실행</button>
+</form>
+
+<h1>실행 중인 서버 목록</h1>
+<form method="post" th:action="@{/api/assetbundles/killServer}" >
+    <table border="1">
+        <tr>
+            <th>선택</th>
+            <th>방 이름</th>
+            <th>사용자</th>
+            <th>모드</th>
+            <th>씬 이름</th>
+            <th>시작 시간</th>
+            <th>앱아이디</th>
+        </tr>
+        <tr th:each="server : ${serversJson}">
+            <td><input type="checkbox" name="serverIds" th:value="${server.appid}+'/'+${server.room}"/></td>
+            <td th:text="${server.room}"></td>
+            <td th:text="${server.username}"></td>
+            <td th:text="${server.mode}"></td>
+            <td th:text="${server.scenename}"></td>
+            <td th:text="${server.startedAt}"></td>
+            <td th:text="${server.appid}"></td>
+        </tr>
+    </table>
+    <button type="submit" onclick="return confirmKill()">서버 종료</button>
+    
+</body>
+</html>

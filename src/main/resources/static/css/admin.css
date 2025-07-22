@@ -1,0 +1,113 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+
+ .form-inline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    label {
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    input[type="text"] {
+        padding: 6px 10px;
+        border: 1px solid #333;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+   
+   /* serverParam 인풋만 너비 조정 */
+#serverParam {
+    width: 400px; /* 원하는 너비 */
+}
+
+    
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #337ab7;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+able {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #aaa;
+}
+
+th, td {
+    padding: 10px;
+}
+
+.form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-label {
+        display: inline-block;
+        width: 100px;
+        font-weight: bold;
+    }
+
+    .input-text {
+        width: 300px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    #executablePath {
+        border: 2px dashed #bbb;
+        background-color: #f9f9f9;
+        transition: border 0.3s;
+    }
+
+    #executablePath.drag-over {
+        border-color: #007bff;
+        background-color: #eef5ff;
+    }
+    
+    .drop-zone {
+        width: 300px;
+        height: 40px;
+        border: 2px dashed #aaa;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #888;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    .drop-zone.drag-over {
+        background-color: #eef5ff;
+        border-color: #007bff;
+        color: #333;
+    }
+
+    .input-text {
+        width: 300px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    
+    

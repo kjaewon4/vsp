@@ -1,0 +1,29 @@
+/* static/css/header.css */
+.vsp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    background-color: #222;
+    color: white;
+}
+
+.vsp-logo a {
+    font-size: 24px;
+    font-weight: bold;
+    color: #f7a300;
+    text-decoration: none;
+}
+
+.vsp-actions .login-button {
+    background-color: #f7a300;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.vsp-actions .login-button:hover {
+    background-color: #d98c00;
+}

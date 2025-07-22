@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>서버 관리</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body>
+    <h1>서버 관리</h1>
+
+    <form method="post" action="/admin/servers/add">
+        <input type="text" name="name" placeholder="서버 이름" required />
+        <input type="text" name="executablePath" placeholder="실행 파일 경로" required />
+        <input type="text" name="defaultArguments" placeholder="기본 인자 (예: -username=admin)" />
+        <button type="submit">서버 등록</button>
+    </form>
+
+    <hr/>
+
+    <table>
+        <tr>
+            <th>이름</th>
+            <th>경로</th>
+            <th>기본 인자</th>
+            <th>동작</th>
+        </tr>
+        <tr th:each="server : ${servers}">
+            <td th:text="${server.name}"></td>
+            <td th:text="${server.executablePath}"></td>
+            <td th:text="${server.defaultArguments}"></td>
+            <td>
+                <form method="post" th:action="@{/admin/servers/start/{id}(id=${server.id})}">
+                    <button type="submit">실행</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
