@@ -1,0 +1,159 @@
+/* static/css/bundle.css */
+
+/* 전체 레이아웃 */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f5f7fa;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+}
+
+/* 사이드바 */
+.sidebar {
+    width: 220px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.sidebar .logo {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+.sidebar ul li a.active {
+    color: #2d6cdf;
+    font-weight: bold;
+}
+
+/* 메인 콘텐츠 */
+.main-content {
+    flex: 1;
+    padding: 40px 60px;
+}
+
+/* 제목 영역 */
+.title-section h2 {
+    margin: 0;
+    font-size: 26px;
+}
+
+.title-section p {
+    margin: 4px 0 20px;
+    color: #555;
+    font-size: 14px;
+}
+
+/* 카드 스타일 */
+.item-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 35px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.item-card h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #2d6cdf;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* 테이블 스타일 */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.data-table th, .data-table td {
+    border: 1px solid #ddd;
+    padding: 12px 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.data-table thead {
+    background-color: #f1f3f5;
+    font-weight: bold;
+}
+
+.data-table input[type="checkbox"],
+.data-table input[type="radio"] {
+    transform: scale(1.2);
+}
+
+/* 버튼 스타일 */
+.button-primary {
+    background-color: #2d6cdf;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.2s ease;
+}
+
+.button-primary:hover {
+    background-color: #1c56b4;
+}
+
+.button-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.2s ease;
+}
+
+.button-danger:hover {
+    background-color: #c82333;
+}
+
+/* 폼 그룹 */
+.form-group {
+    margin-top: 20px;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.form-group input {
+    padding: 8px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}

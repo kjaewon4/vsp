@@ -1,167 +1,163 @@
 body {
-    font-family: sans-serif;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    background: #f7f9fb;
     margin: 0;
-    background-color: #f9f9f9;
+    padding: 0;
 }
 
-.container {
-    max-width: 900px; /* items.html보다 넓게 설정 */
-    margin: auto;
-    padding-top: 30px;
+.main-content {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 24px;
 }
 
 .title-section h2 {
-    margin: 0;
-    font-size: 24px;
+    font-size: 2.3rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #222;
 }
 
 .title-section p {
     color: #666;
-    font-size: 14px;
+    margin-bottom: 30px;
+    font-size: 1.08rem;
+    font-weight: 400;
 }
 
 .item-card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 24px 0 rgba(31,39,56,.08);
+    padding: 36px 32px 32px 32px;
+    margin-bottom: 30px;
+    transition: box-shadow 0.15s;
 }
 
-/* Table Styles */
+.item-card:hover {
+    box-shadow: 0 8px 36px 0 rgba(31,39,56,.14);
+}
+
+.item-card h3 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #2546ff;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+}
+
 .data-table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fafcff;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px 0 rgba(31,39,56,.04);
 }
 
 .data-table th, .data-table td {
-    border: 1px solid #eee;
-    padding: 10px 15px;
+    padding: 15px 12px;
     text-align: left;
-    font-size: 14px;
 }
 
 .data-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
+    background: #f3f6fa;
     color: #333;
+    font-weight: 700;
+    font-size: 1.02rem;
+    border-bottom: 1px solid #e5e7eb;
 }
 
-.data-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+.data-table tr {
+    transition: background 0.08s;
 }
 
 .data-table tbody tr:hover {
-    background-color: #f0f0f0;
+    background: #f1f5ff;
 }
 
-/* Form Styles */
-form {
-    margin-bottom: 20px;
+.data-table td {
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 1rem;
+    color: #31363c;
 }
 
-.form-group {
-    margin-bottom: 15px;
+.data-table tr:last-child td {
+    border-bottom: none;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
+input[type="text"], .input-text {
+    width: 350px;
+    padding: 10px 12px;
+    border: 1.5px solid #dde3ed;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #f7fafc;
+    margin-bottom: 6px;
+    transition: border-color .2s;
 }
 
-.form-group input[type="text"] {
-    width: calc(100% - 22px); /* Padding and border */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
+input[type="text"]:focus {
+    border-color: #2546ff;
+    background: #fff;
 }
 
-/* Button Styles */
-.button-primary, .button-danger {
-    padding: 10px 20px;
+.button-primary, button[type="submit"]:not(.button-danger) {
+    background: linear-gradient(90deg,#2546ff 60%, #4f8bff 100%);
+    color: #fff;
     border: none;
-    border-radius: 5px;
-    font-size: 15px;
+    padding: 11px 26px;
+    border-radius: 12px;
+    font-size: 1.07rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    box-shadow: 0 2px 8px 0 rgba(37,70,255,0.10);
     cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
-    margin-right: 10px; /* 버튼 간 간격 */
-}
-
-.button-primary {
-    background-color: #007bff;
-    color: white;
+    margin-top: 6px;
+    margin-right: 8px;
+    transition: background 0.18s;
 }
 
 .button-primary:hover {
-    background-color: #0056b3;
+    background: linear-gradient(90deg,#1830c9 60%, #295fc9 100%);
 }
 
 .button-danger {
-    background-color: #dc3545;
-    color: white;
+    background: #ff4154;
+    color: #fff;
+    border: none;
+    padding: 11px 26px;
+    border-radius: 12px;
+    font-size: 1.07rem;
+    font-weight: 700;
+    box-shadow: 0 2px 8px 0 rgba(255,65,84,0.09);
+    cursor: pointer;
+    margin-top: 6px;
+    transition: background 0.18s;
 }
 
 .button-danger:hover {
-    background-color: #c82333;
+    background: #d31a37;
 }
 
-/* Specific adjustments for serverParam input */
-#serverParam {
-    width: calc(100% - 22px); /* Full width within its container */
+.form-group {
+    margin-bottom: 20px;
 }
 
-/* Checkbox styling */
-input[type="checkbox"], input[type="radio"] {
-    transform: scale(1.2); /* 체크박스/라디오 버튼 크기 키우기 */
-    margin-right: 5px;
+label {
+    font-weight: 600;
+    color: #2a2a2a;
+    margin-right: 10px;
+    font-size: 1rem;
 }
 
-/* Utility classes for alignment */
-.text-center {
-    text-align: center;
+@media (max-width: 900px) {
+    .main-content {
+        max-width: 98vw;
+        padding: 0 5vw;
+    }
+    .item-card { padding: 18px 10px 22px 10px; }
+    .data-table th, .data-table td { padding: 9px 6px; font-size: 0.98rem;}
 }
-
-.text-right {
-    text-align: right;
-}
-
-/* Existing styles that might still be relevant or need adjustment */
-.form-inline {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.drop-zone {
-    width: 300px;
-    height: 40px;
-    border: 2px dashed #aaa;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #888;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
-
-.drop-zone.drag-over {
-    background-color: #eef5ff;
-    border-color: #007bff;
-    color: #333;
-}
-
-.input-text {
-    width: 300px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-    
-    
-    

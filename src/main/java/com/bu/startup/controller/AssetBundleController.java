@@ -289,6 +289,7 @@ public class AssetBundleController {
 	    	String userId = authentication.getName();
 	    	
 	    	ModelAndView mav = new ModelAndView("admin/assetBundle");
+//	    	ModelAndView mav = new ModelAndView("admin/bundle");
 	    	mav.addObject("assetBundles", assetBundleService.getAllBundles());
 	    	
 	    	String appid = VirtualStartUpApplication.PhotonAppID.get(0);

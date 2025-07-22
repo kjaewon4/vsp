@@ -16,7 +16,7 @@
 
                     <!-- 관리자에게만 보이는 메뉴 -->
                     <li sec:authorize="hasRole('ROLE_ADMIN')">
-                        <a th:href="@{/admin/dashboard}">관리자 페이지</a>
+                        <a th:href="@{/api/assetbundles/bundleList}">Bundle 관리</a>
                     </li>
                 </ul>
             </nav>
