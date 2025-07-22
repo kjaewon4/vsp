@@ -1,113 +1,167 @@
 body {
     font-family: sans-serif;
-    margin: 20px;
+    margin: 0;
+    background-color: #f9f9f9;
 }
 
+.container {
+    max-width: 900px; /* items.html보다 넓게 설정 */
+    margin: auto;
+    padding-top: 30px;
+}
+
+.title-section h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.title-section p {
+    color: #666;
+    font-size: 14px;
+}
+
+.item-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Table Styles */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.data-table th, .data-table td {
+    border: 1px solid #eee;
+    padding: 10px 15px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.data-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+/* Form Styles */
 form {
     margin-bottom: 20px;
 }
 
-
- .form-inline {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    label {
-        font-weight: bold;
-        white-space: nowrap;
-    }
-
-    input[type="text"] {
-        padding: 6px 10px;
-        border: 1px solid #333;
-        border-radius: 4px;
-        font-size: 14px;
-    }
-   
-   /* serverParam 인풋만 너비 조정 */
-#serverParam {
-    width: 400px; /* 원하는 너비 */
-}
-
-    
-button {
-    margin: 5px;
-    padding: 10px 20px;
-    background-color: #337ab7;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-able {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table, th, td {
-    border: 1px solid #aaa;
-}
-
-th, td {
-    padding: 10px;
-}
-
 .form-group {
-        margin-bottom: 15px;
-    }
+    margin-bottom: 15px;
+}
 
-    .form-label {
-        display: inline-block;
-        width: 100px;
-        font-weight: bold;
-    }
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
 
-    .input-text {
-        width: 300px;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+.form-group input[type="text"] {
+    width: calc(100% - 22px); /* Padding and border */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
 
-    #executablePath {
-        border: 2px dashed #bbb;
-        background-color: #f9f9f9;
-        transition: border 0.3s;
-    }
+/* Button Styles */
+.button-primary, .button-danger {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    margin-right: 10px; /* 버튼 간 간격 */
+}
 
-    #executablePath.drag-over {
-        border-color: #007bff;
-        background-color: #eef5ff;
-    }
-    
-    .drop-zone {
-        width: 300px;
-        height: 40px;
-        border: 2px dashed #aaa;
-        border-radius: 4px;
-        background-color: #f9f9f9;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #888;
-        cursor: pointer;
-        margin-bottom: 10px;
-    }
+.button-primary {
+    background-color: #007bff;
+    color: white;
+}
 
-    .drop-zone.drag-over {
-        background-color: #eef5ff;
-        border-color: #007bff;
-        color: #333;
-    }
+.button-primary:hover {
+    background-color: #0056b3;
+}
 
-    .input-text {
-        width: 300px;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+.button-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.button-danger:hover {
+    background-color: #c82333;
+}
+
+/* Specific adjustments for serverParam input */
+#serverParam {
+    width: calc(100% - 22px); /* Full width within its container */
+}
+
+/* Checkbox styling */
+input[type="checkbox"], input[type="radio"] {
+    transform: scale(1.2); /* 체크박스/라디오 버튼 크기 키우기 */
+    margin-right: 5px;
+}
+
+/* Utility classes for alignment */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* Existing styles that might still be relevant or need adjustment */
+.form-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.drop-zone {
+    width: 300px;
+    height: 40px;
+    border: 2px dashed #aaa;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.drop-zone.drag-over {
+    background-color: #eef5ff;
+    border-color: #007bff;
+    color: #333;
+}
+
+.input-text {
+    width: 300px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
     
     
     

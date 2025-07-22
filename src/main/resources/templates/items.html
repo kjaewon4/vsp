@@ -1,88 +1,72 @@
 <!--아이템 목록 및 상세 보기 페이지-->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Item Board</title>
-    <link rel="stylesheet" href="/static/css/items.css">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: commonHead}">
 </head>
+<link rel="stylesheet" th:href="@{/css/items.css}">
 <body>
+    <!-- Header fragment -->
+    <div th:replace="~{fragments/header :: commonHeader}"></div>
+
     <div class="container">
         <div class="title-section">
-            <h2>Item Bulletin Board</h2>
-            <p>Browse and discover items shared by our community</p>
+            <h2>창업 아이템 존</h2>
+            <p>다양한 창업 아이템을 둘러보세요</p>
         </div>
 
-        <div class="filters">
-            <select>
-                <option>All Categories</option>
+        <form method="get" action="/api/items" class="filters">
+            <select class="filter-select" name="category">
+                <option value="">All Categories</option>
+                <option th:each="c : ${categories}"
+                        th:value="${c.name()}"
+                        th:text="${c.displayName}"
+                        th:selected="${c.name() == param.category}">카테고리</option>
             </select>
-            <select>
-                <option>All Status</option>
+
+            <select class="filter-select" name="status">
+                <option value="">All Status</option>
+                <option th:each="s : ${statuses}"
+                        th:value="${s.name()}"
+                        th:text="${s.displayName}"
+                        th:selected="${s.name() == param.status}">상태</option>
             </select>
-            <button>More Filters</button>
-        </div>
 
-        <div class="item-card">
-            <div class="item-header">
-                <h3>Vintage Leather Jacket</h3>
-                <span class="status available">Available</span>
-            </div>
-            <p class="author">by John Smith</p>
-            <span class="category fashion">Fashion</span>
-            <p class="desc">Authentic vintage leather jacket in excellent condition. Perfect for casual wear or special occasions.</p>
-            <div class="item-footer">
-                <span>124 views</span>
-                <span>·</span>
-                <span>Dec 15, 2024</span>
-            </div>
-        </div>
+            <button type="submit" class="filter-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 01.8 1.6l-4.6 6.1V16a1 1 0 01-1.447.894l-2-1A1 1 0 018 15v-3.3L3.2 5.6A1 1 0 013 5z" clip-rule="evenodd"/>
+                </svg>
+                <span>Filter</span>
+            </button>
+        </form>
 
-        <div class="item-card">
-            <div class="item-header">
-                <h3>iPhone 14 Pro Max</h3>
-                <span class="status sold">Sold</span>
-            </div>
-            <p class="author">by Sarah Johnson</p>
-            <span class="category electronics">Electronics</span>
-            <p class="desc">Brand new iPhone 14 Pro Max, 256GB storage, Deep Purple color. Still in original packaging.</p>
-            <div class="item-footer">
-                <span>89 views</span>
-                <span>·</span>
-                <span>Dec 14, 2024</span>
-            </div>
-        </div>
 
-        <div class="item-card">
+
+        <!-- 아이템 목록을 동적으로 표시 -->
+        <div th:each="item : ${items}" class="item-card">
             <div class="item-header">
-                <h3>Gaming Chair Pro</h3>
-                <span class="status reserved">Reserved</span>
+                <h3 th:text="${item.title}">아이템 제목</h3>
+                <span class="status" th:classappend="${item.status.name().toLowerCase()}" th:text="${item.status.displayName}">상태</span>
             </div>
-            <p class="author">by Mike Chen</p>
-            <span class="category home-garden">Home & Garden</span>
-            <p class="desc">Ergonomic gaming chair with lumbar support and adjustable height. Used for 6 months, excellent condition.</p>
+            <p class="author">by <span th:text="${item.user.profile.nickname}">사용자 닉네임</span></p>
+            <span class="category" th:classappend="${item.category.name().toLowerCase()}" th:text="${item.category.displayName}">카테고리</span>
+            <p class="desc" th:text="${item.description}">아이템 설명</p>
             <div class="item-footer">
-                <span>156 views</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+                <span th:text="${item.views} + ' views'">조회수</span>
                 <span>·</span>
-                <span>Dec 13, 2024</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span th:text="${#temporals.format(item.createdAt, 'yyyy-MM-dd')}">생성일</span>
             </div>
         </div>
 
-        <div class="item-card">
-            <div class="item-header">
-                <h3>Tennis Racket Wilson Pro</h3>
-                <span class="status available">Available</span>
-            </div>
-            <p class="author">by Emma Wilson</p>
-            <span class="category sports">Sports</span>
-            <p class="desc">Professional tennis racket, barely used. Perfect weight and balance for intermediate to advanced players.</p>
-            <div class="item-footer">
-                <span>67 views</span>
-                <span>·</span>
-                <span>Dec 12, 2024</span>
-            </div>
-        </div>
     </div>
 </body>
 </html>

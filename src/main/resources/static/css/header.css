@@ -1,29 +1,81 @@
-/* static/css/header.css */
 .vsp-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 32px;
-    background-color: #222;
-    color: white;
+    padding: 12px 24px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.vsp-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
 }
 
 .vsp-logo a {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
-    color: #f7a300;
+    color: #111827;
     text-decoration: none;
 }
 
-.vsp-actions .login-button {
-    background-color: #f7a300;
-    color: white;
-    padding: 8px 16px;
+.vsp-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 16px;
+}
+
+.vsp-nav li a {
     text-decoration: none;
+    color: #374151;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.vsp-nav li a:hover {
+    color: #6366f1;
+}
+
+.vsp-search {
+    flex-grow: 1;
+    max-width: 300px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 6px 12px;
+    border: 1px solid #cbd5e1;
     border-radius: 6px;
-    font-weight: bold;
+    font-size: 14px;
 }
 
-.vsp-actions .login-button:hover {
-    background-color: #d98c00;
+.vsp-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.login-button,
+.logout-button {
+    background-color: #6366f1;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.login-button:hover,
+.logout-button:hover {
+    background-color: #4f46e5;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
 }

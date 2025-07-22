@@ -1,11 +1,41 @@
 <!-- templates/fragments/header.html -->
-<div th:fragment="commonHeader">
+<div th:fragment="commonHeader" xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <header class="vsp-header">
-        <div class="vsp-logo">
-            <a th:href="@{/}">VSP</a>
+        <div class="vsp-left">
+            <div class="vsp-logo">
+                <a th:href="@{/home}">VSP</a>
+            </div>
+
+            <nav class="vsp-nav">
+                <ul>
+                    <!-- 로그인한 모든 사용자에게 보이는 메뉴 -->
+                    <li sec:authorize="isAuthenticated()">
+                        <a th:href="@{/api/items}">아이템</a>
+                    </li>
+
+                    <!-- 관리자에게만 보이는 메뉴 -->
+                    <li sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a th:href="@{/admin/dashboard}">관리자 페이지</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
+
+        <!-- 검색창 추가 -->
+        <div class="vsp-search">
+            <input type="text" class="search-input" placeholder="아이템 이름과 등록자 이름으로 검색하세요." />
+        </div>
+
         <div class="vsp-actions">
-            <a th:href="@{/login}" class="login-button">로그인</a>
+            <!-- 로그인하지 않았을 때 -->
+            <a th:href="@{/login}" sec:authorize="isAnonymous()" class="login-button">로그인</a>
+
+            <!-- 로그인했을 때 -->
+            <div sec:authorize="isAuthenticated()" class="user-info">
+                <span sec:authentication="name"></span>님, 환영합니다!
+                <a th:href="@{/logout}" class="logout-button">로그아웃</a>
+            </div>
         </div>
     </header>
 </div>

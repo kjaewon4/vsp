@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{fragments/head :: commonHead}">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" th:href="@{/css/admin.css}" />
     <script th:src="@{/js/admin.js}"></script>
 </head>
 <body>
+<div th:replace="~{fragments/header :: commonHeader}"></div>
 <h1>Admin Dashboard</h1>
 <p th:text="'Server Status: ' + ${serverStatus}" />
 

@@ -2,12 +2,12 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     margin: 0;
-    padding: 20px;
 }
 
 .container {
     max-width: 700px;
     margin: auto;
+    padding-top: 30px;
 }
 
 .title-section h2 {
@@ -23,7 +23,48 @@ body {
 .filters {
     margin: 20px 0;
     display: flex;
-    gap: 10px;
+    align-items: center;
+    gap: 12px;
+}
+
+.filter-select {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #888;
+}
+
+.filter-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+    padding: 6px;
+    transition: color 0.2s;
+}
+
+.filter-button svg {
+    fill: #555;
+}
+
+.filter-button:hover {
+    color: #111;
+}
+
+.filter-button:hover svg {
+    fill: #111;
 }
 
 .item-card {
@@ -52,19 +93,34 @@ body {
     font-weight: bold;
 }
 
-.status.available {
+.status.draft {
+    background: #e0e0e0;
+    color: #616161;
+}
+
+.status.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status.approved {
     background: #e6f4ea;
     color: #34a853;
 }
 
-.status.sold {
+.status.rejected {
     background: #fce8e6;
     color: #d93025;
 }
 
-.status.reserved {
-    background: #fef7e0;
-    color: #e37400;
+.status.archived {
+    background: #e8eaf6;
+    color: #3949ab;
+}
+
+.status.deleted {
+    background: #eeeeee;
+    color: #9e9e9e;
 }
 
 .author {
@@ -79,12 +135,64 @@ body {
     font-size: 12px;
     border-radius: 6px;
     margin: 6px 0;
+    font-weight: 500;
 }
 
-.category.fashion { background: #e0f2ff; color: #0277bd; }
-.category.electronics { background: #f3e5f5; color: #6a1b9a; }
-.category.home-garden { background: #e8f5e9; color: #2e7d32; }
-.category.sports { background: #fff8e1; color: #ef6c00; }
+/* 카테고리별 색상 */
+.category.it_software {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.category.ecommerce {
+    background: #fce4ec;
+    color: #c2185b;
+}
+
+.category.education {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.category.healthcare {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.category.media_content {
+    background: #f3e5f5;
+    color: #6a1b9a;
+}
+
+.category.fintech {
+    background: #e0f7fa;
+    color: #00838f;
+}
+
+.category.social_impact {
+    background: #ede7f6;
+    color: #5e35b1;
+}
+
+.category.food {
+    background: #fffde7;
+    color: #f9a825;
+}
+
+.category.fashion_beauty {
+    background: #fce4ec;
+    color: #ad1457;
+}
+
+.category.lifestyle {
+    background: #e1f5fe;
+    color: #039be5;
+}
+
+.category.etc {
+    background: #eceff1;
+    color: #546e7a;
+}
 
 .desc {
     margin: 10px 0;
@@ -94,4 +202,40 @@ body {
 .item-footer {
     font-size: 12px;
     color: #888;
+}
+/* 추가된 부분 */
+.item-footer svg {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+.item-footer span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 70px;
+    text-align: center;
+}
+
+.author img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 8px;
+    object-fit: cover;
+}
+
+.author span {
+    vertical-align: middle;
 }

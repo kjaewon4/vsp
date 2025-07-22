@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Home</title></head>
+<head th:replace="~{fragments/head :: commonHead}">
+    <title>Home</title>
+</head>
 <body>
+
+<header th:replace="fragments/header :: commonHeader"></header>
+
 <h2>Welcome, <span th:text="${username}"></span>!</h2>
 <a th:href="@{/logout}">Logout</a>
 |
