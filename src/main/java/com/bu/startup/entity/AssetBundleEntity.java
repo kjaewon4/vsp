@@ -29,6 +29,7 @@ public class AssetBundleEntity extends BaseEntity{
     private String bundleDescription;
 
     @ElementCollection
+    @OrderColumn(name = "file_path_order") // 순서 컬럼 명시
     private List<String> filePath;
 
     // 번들 작성자

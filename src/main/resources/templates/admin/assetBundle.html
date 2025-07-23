@@ -39,11 +39,11 @@
                             <td><input type="checkbox" name="bundleIds" th:value="${bundle.id}" /></td>
                             <td th:text="${bundle.id}"></td>
                             <td th:text="${bundle.bundleName}"></td>
-                            <td th:text="${bundle.filePath[0]}"></td>
-                            <td th:text="${bundle.filePath[1]}"></td>
+                            <td th:text="${bundle.filePath != null and bundle.filePath.size() > 0 ? bundle.filePath.get(0) : '-'}"></td>
+                            <td th:text="${bundle.filePath != null and bundle.filePath.size() > 1 ? bundle.filePath.get(1) : '-'}"></td>
                             <td th:text="${bundle.bundleTitle}"></td>
                             <td th:text="${bundle.bundleDescription}"></td>
-                            <td th:text="${bundle.uploadedAt}"></td>
+                            <td th:text="${bundle.createdAt}"></td>
                         </tr>
                     </tbody>
                 </table>
