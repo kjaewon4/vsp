@@ -19,7 +19,7 @@
                 <div class="card-body">
                     <h5 class="card-title"><a th:href="@{/api/assetbundles/{id}(id=${bundle.id})}" th:text="${bundle.bundleTitle}">Bundle Title</a></h5>
                     <p class="card-text" th:text="${bundle.bundleDescription}">Bundle Description</p>
-                    <p class="card-text"><small class="text-muted">Uploaded: <span th:text="${#temporals.format(bundle.uploadedAt, 'yyyy-MM-dd HH:mm')}"></span></small></p>
+                    <p class="card-text"><small class="text-muted">Uploaded: <span th:text="${#temporals.format(bundle.createdAt, 'yyyy-MM-dd HH:mm')}"></span></small></p>
                 </div>
             </div>
         </div>

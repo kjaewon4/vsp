@@ -1,7 +1,9 @@
 package com.bu.startup.repo;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.bu.startup.type.CategoryType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +13,6 @@ import com.bu.startup.entity.AssetBundleEntity;
 public interface AssetBundleRepository extends JpaRepository<AssetBundleEntity, Long> {
 	
 	 Optional<AssetBundleEntity> findByBundleName(String bundleName);
-	 
+
+    List<AssetBundleEntity> findByCategory(CategoryType category);
 }

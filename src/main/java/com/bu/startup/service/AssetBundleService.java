@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.bu.startup.entity.StartupItem;
+import com.bu.startup.type.CategoryType;
+import com.bu.startup.type.ItemStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,8 +45,8 @@ public class AssetBundleService {
         // DB 저장
         AssetBundleEntity bundle = AssetBundleEntity.builder()
                 .bundleName(bundleName)
-                .filePath(new String[]{pathW.toString() , ""})
-                .uploadedAt(LocalDateTime.now())
+                .filePath(List.of(new String[]{pathW.toString(), ""}))
+//                .uploadedAt(LocalDateTime.now())
                 .build();
 
         return assetBundleRepository.save(bundle);
@@ -68,8 +71,8 @@ public class AssetBundleService {
                 .bundleName(bundleName)
                 .bundleTitle(bundleTitle)
                 .bundleDescription(bundleDescription)
-                .filePath(  new String[]{pathW.toString() , ""} )
-                .uploadedAt(LocalDateTime.now())
+                .filePath(List.of(new String[]{pathW.toString(), ""}))
+//                .uploadedAt(LocalDateTime.now())
                 .build();
         
         return assetBundleRepository.save(bundle);
@@ -104,8 +107,8 @@ public class AssetBundleService {
                 .bundleName(bundleName)
                 .bundleTitle(bundleTitle)
                 .bundleDescription(bundleDescription)
-                .filePath(  new String[]{pathW.toString() , pathA.toString()} )
-                .uploadedAt(LocalDateTime.now())
+                .filePath(List.of(new String[]{pathW.toString(), pathA.toString()}))
+//                .uploadedAt(LocalDateTime.now())
                 .build();
         
         return assetBundleRepository.save(bundle);
@@ -157,8 +160,14 @@ public class AssetBundleService {
             }
         }
     }
-    
-    
-    
-    
+
+    /**
+     * 필터 검색
+     * @param category
+     * @return
+     */
+    public List<AssetBundleEntity> getBundlesByCategory(CategoryType category) {
+        return assetBundleRepository.findByCategory(category);
+    }
+
 }

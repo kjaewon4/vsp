@@ -32,7 +32,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
-                    <span th:text="'업로드: ' + ${#temporals.format(bundle.uploadedAt, 'yyyy-MM-dd HH:mm')}"></span>
+                    <span th:text="'업로드: ' + ${#temporals.format(bundle.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
                 </li>
                 <li>
                     <button id="likeButton" class="btn-like-heart" th:classappend="${isLiked} ? 'liked' : ''" type="button">
@@ -68,7 +68,7 @@
 <!--                    <dt>상태</dt>-->
 <!--                    <dd th:text="${bundle.status}">상태</dd>-->
                     <dt>업로드 날짜</dt>
-                    <dd th:text="${#temporals.format(bundle.uploadedAt, 'yyyy-MM-dd HH:mm')}">2025-08-01 14:00</dd>
+                    <dd th:text="${#temporals.format(bundle.createdAt, 'yyyy-MM-dd HH:mm')}">2025-08-01 14:00</dd>
                 </dl>
             </div>
             <div class="tab-panel">

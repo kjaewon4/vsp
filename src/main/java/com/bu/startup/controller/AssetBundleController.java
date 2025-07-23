@@ -13,6 +13,8 @@ import java.util.stream.IntStream;
 
 //import org.hibernate.mapping.Collection;
 import com.bu.startup.entity.Post;
+import com.bu.startup.type.CategoryType;
+import com.bu.startup.type.ItemStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -83,8 +85,8 @@ public class AssetBundleController {
 	 private final Sinks.Many<String> sink = Sinks.many().multicast().directBestEffort();
 	 
 	 
-	    @Value("${upload.path}")
-	    private String uploadPath;
+	@Value("${upload.path}")
+	private String uploadPath;
 
 	/**
 	 * 단일 파일 + 설명 등록
@@ -209,7 +211,7 @@ public class AssetBundleController {
 	    	 if (optional.isEmpty()) return ResponseEntity.notFound().build();
 
 		        AssetBundleEntity bundle = optional.get();
-		        Path path = Paths.get(bundle.getFilePath()[0]);
+		        Path path = Paths.get(bundle.getFilePath().get(0));
 
 		        try {
 		            byte[] data = Files.readAllBytes(path);
@@ -229,10 +231,10 @@ public class AssetBundleController {
 	    	 if (optional.isEmpty()) return ResponseEntity.notFound().build();
 
 		        AssetBundleEntity bundle = optional.get();
-		        Path path = Paths.get(bundle.getFilePath()[0]);
+		        Path path = Paths.get(bundle.getFilePath().get(0));
 		        
 		        if(platform.equals("and"))
-		        	path = Paths.get(bundle.getFilePath()[1]);
+		        	path = Paths.get(bundle.getFilePath().get(1));
 
 		        try {
 		            byte[] data = Files.readAllBytes(path);
@@ -293,44 +295,46 @@ public class AssetBundleController {
 	    {
 	    	return serverService.getAliveRoomNames();
 	    }
-	    
-	    
-	   
-	    
-	    
-	    @GetMapping("/bundleList")
-	    public ModelAndView listBundles(Authentication authentication) throws JsonProcessingException {
-	    	
-	    	if(authentication == null) return new ModelAndView("login");
-	    	
-	    	String userId = authentication.getName();
-	    	
-	    	ModelAndView mav = new ModelAndView("admin/assetBundle");
-//	    	ModelAndView mav = new ModelAndView("admin/bundle");
-	    	mav.addObject("assetBundles", assetBundleService.getAllBundles());
-	    	
-	    	String appid = VirtualStartUpApplication.PhotonAppID.get(0);
-	    	String args = String.format(
-	    		    "-room=%s -mode=%s -scenename=%s -username=%s",
-	    		    "Samsung", "admin", "Room", userId
-	    		);	    	
-	    	
-	    	mav.addObject("params", args);
-	    	
-	    	
-	    	
-	    	List<AppInfo> appInfoList = IntStream.range(0, VirtualStartUpApplication.PhotonAppID.size())
-	    				 .mapToObj(index -> new AppInfo(String.valueOf(index), VirtualStartUpApplication.PhotonAppID.get(index)))
-	                 .collect(Collectors.toList());
-	    	
-	    	mav.addObject("appidList", appInfoList );
-	    	
-	    	
-	    	serverService.cleanUpDeadProcesses();
-	    	Collection<ServerInstance> runningServers = serverService.getConnectedServers();
-	    	
-	    	System.out.println(runningServers);
-	    	
+
+
+	/**
+	 * 관리자용 - 번들 목록 및 서버 관리
+	 * @param authentication
+	 * @return
+	 * @throws JsonProcessingException
+	 */
+	@GetMapping("/admin/bundleList")
+	public ModelAndView listBundles(Authentication authentication) throws JsonProcessingException {
+
+		if(authentication == null) return new ModelAndView("login");
+
+		String userId = authentication.getName();
+
+		ModelAndView mav = new ModelAndView("admin/assetBundle");
+		mav.addObject("assetBundles", assetBundleService.getAllBundles());
+
+		String appid = VirtualStartUpApplication.PhotonAppID.get(0);
+		String args = String.format(
+				"-room=%s -mode=%s -scenename=%s -username=%s",
+				"Samsung", "admin", "Room", userId
+			);
+
+		mav.addObject("params", args);
+
+
+
+		List<AppInfo> appInfoList = IntStream.range(0, VirtualStartUpApplication.PhotonAppID.size())
+					 .mapToObj(index -> new AppInfo(String.valueOf(index), VirtualStartUpApplication.PhotonAppID.get(index)))
+				 .collect(Collectors.toList());
+
+		mav.addObject("appidList", appInfoList );
+
+
+		serverService.cleanUpDeadProcesses();
+		Collection<ServerInstance> runningServers = serverService.getConnectedServers();
+
+		System.out.println(runningServers);
+
 //			ObjectMapper mapper = new ObjectMapper();
 //			    // LocalDateTime 포맷 지정 (선택)
 //			mapper.findAndRegisterModules();
@@ -338,158 +342,173 @@ public class AssetBundleController {
 //			String serversJson = mapper.writeValueAsString(runningServers);
 //			
 //			System.out.println(serversJson);
-			mav.addObject("serversJson", runningServers);
-	    	    
+		mav.addObject("serversJson", runningServers);
+
 //	    	mav.addObject("rooms", serverService.getAliveRoomNames());
 ////	    	mav.addObject("serverStatus", serverService.getStatus());      
 ////	    	mav.addObject("username", authentication.getName());
 //	    	mav.addObject("servers", serverService.getRunningServers()); // NEW
 //	    	mav.addObject("rooms", serverService.getAliveRoomNames());
-	       
-	        return mav;
-	    }
 
-	    @GetMapping("/bundleListOnly")
-	    public ModelAndView listBundlesOnly(Authentication authentication) {
-	        if(authentication == null) return new ModelAndView("login");
-	        
-	        ModelAndView mav = new ModelAndView("/admin/bundleListOnly");
-	        mav.addObject("assetBundles", assetBundleService.getAllBundles());
-	        return mav;
-	    }
+		return mav;
+	}
+
+	/**
+	 * 번들 목록(창업 아이템 부스) 조회
+	 * @param authentication
+	 * @return
+	 */
+	@GetMapping("/bundleList")
+	public ModelAndView listBundlesOnly(@RequestParam(required = false) CategoryType category,
+										Authentication authentication) {
+		if(authentication == null) return new ModelAndView("login");
+
+		List<AssetBundleEntity> bundleList;
+		if (category != null) {
+			bundleList = assetBundleService.getBundlesByCategory(category);
+		} else {
+			bundleList = assetBundleService.getAllBundles();
+		}
+
+		ModelAndView mav = new ModelAndView("/bundleList");
+		mav.addObject("bundleList", bundleList);
+		mav.addObject("categories", CategoryType.values());
+		mav.addObject("statuses", ItemStatus.values());
+		return mav;
+	}
 	    
-	    @GetMapping("/{id}")
-	    public ModelAndView getBundleDetail(@PathVariable Long id, Authentication authentication) {
-	        ModelAndView mav = new ModelAndView("bundleDetail");
-	        AssetBundleEntity bundle = assetBundleService.getBundleById(id)
-	                .orElseThrow(() -> new IllegalArgumentException("AssetBundle not found"));
-	        mav.addObject("bundle", bundle);
+	@GetMapping("/{id}")
+	public ModelAndView getBundleDetail(@PathVariable Long id, Authentication authentication) {
+		ModelAndView mav = new ModelAndView("bundleDetail");
+		AssetBundleEntity bundle = assetBundleService.getBundleById(id)
+				.orElseThrow(() -> new IllegalArgumentException("AssetBundle not found"));
+		mav.addObject("bundle", bundle);
 
-	        if (authentication != null && authentication.isAuthenticated()) {
-	            User currentUser = userService.getUserByUsername(authentication.getName());
-	            if (currentUser != null) {
-	                mav.addObject("isLiked", likeService.isLiked(id, currentUser));
-	            }
-	        }
-	        mav.addObject("likeCount", likeService.getLikeCount(id));
-			List<Post> postList = postService.getPostsByAssetBundleId(id);
-			mav.addObject("postList", postList);
-			return mav;
-	    }
-
-	    @PostMapping("/{id}/like")
-	    public ResponseEntity<Void> toggleLike(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
-	        if (userDetails == null) {
-	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-	        }
-	        User currentUser = userService.getUserByUsername(userDetails.getUsername());
-	        if (currentUser == null) {
-	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-	        }
-	        likeService.toggleLike(id, currentUser);
-	        return ResponseEntity.ok().build();
-	    }
-
-	    @PostMapping("/killServer")
-	    public ResponseEntity<Void> killServer(@RequestParam(value = "serverIds", required = false) List<String> roomNames)
-	    {
-	    	if(roomNames == null || roomNames.isEmpty())
-	    		return getRedirect("/api/assetbundles/bundleList"); // 302 Redirect
-	    	
-	    	
-			for (String room : roomNames) {
-				
-				serverService.stop(room);
-				
-			    System.out.println("종료 요청된 방: " + room);
-			// 해당 room 이름을 기준으로 서버 종료 처리
+		if (authentication != null && authentication.isAuthenticated()) {
+			User currentUser = userService.getUserByUsername(authentication.getName());
+			if (currentUser != null) {
+				mav.addObject("isLiked", likeService.isLiked(id, currentUser));
 			}
-	    	
-			sink.tryEmitNext("refresh");  // "refresh" 메시지를 클라이언트에 보냄
-			
-	    	return getRedirect("/api/assetbundles/bundleList"); // 302 Redirect
-	    }
+		}
+		mav.addObject("likeCount", likeService.getLikeCount(id));
+		List<Post> postList = postService.getPostsByAssetBundleId(id);
+		mav.addObject("postList", postList);
+		return mav;
+	}
 
-	    @PostMapping("/deleteSelected")
-	    public  ResponseEntity<Void> deleteSelected(@RequestParam(value = "bundleIds", required = false) List<Long> bundleIds) {
-	    	
-	    	if(bundleIds == null || bundleIds.isEmpty())
-	    		return getRedirect("/api/assetbundles/bundleList"); // 302 Redirect
-	    		
-	        assetBundleService.deleteByIds(bundleIds);
-	        
-	        sink.tryEmitNext("refresh");  // "refresh" 메시지를 클라이언트에 보냄
-	        
-	        return getRedirect("/api/assetbundles/bundleList"); // 302 Redirect
-	    }
+	@PostMapping("/{id}/like")
+	public ResponseEntity<Void> toggleLike(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+		if (userDetails == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		User currentUser = userService.getUserByUsername(userDetails.getUsername());
+		if (currentUser == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		likeService.toggleLike(id, currentUser);
+		return ResponseEntity.ok().build();
+	}
 
-	    @PostMapping("/findSelectedWithServer")
-	    public  ResponseEntity<Void> findSelected(
-	    		@RequestParam(value = "bundleIds", required = false) List<Long> bundleIds,
-	    		@RequestParam(value = "appIds", required = false) List<Long> appIds,
-	    		@RequestParam(value = "serverParam", required = false) String serverParam)
-	    {
+	@PostMapping("/killServer")
+	public ResponseEntity<Void> killServer(@RequestParam(value = "serverIds", required = false) List<String> roomNames)
+	{
+		if(roomNames == null || roomNames.isEmpty())
+			return getRedirect("/api/assetbundles/bundleList"); // 302 Redirect
+
+
+		for (String room : roomNames) {
+
+			serverService.stop(room);
+
+			System.out.println("종료 요청된 방: " + room);
+		// 해당 room 이름을 기준으로 서버 종료 처리
+		}
+
+		sink.tryEmitNext("refresh");  // "refresh" 메시지를 클라이언트에 보냄
+
+		return getRedirect("/api/assetbundles/bundleList"); // 302 Redirect
+	}
+
+	@PostMapping("/deleteSelected")
+	public  ResponseEntity<Void> deleteSelected(@RequestParam(value = "bundleIds", required = false) List<Long> bundleIds) {
+
+		if(bundleIds == null || bundleIds.isEmpty())
+			return getRedirect("/api/assetbundles/bundleList"); // 302 Redirect
+
+		assetBundleService.deleteByIds(bundleIds);
+
+		sink.tryEmitNext("refresh");  // "refresh" 메시지를 클라이언트에 보냄
+
+		return getRedirect("/api/assetbundles/bundleList"); // 302 Redirect
+	}
+
+	@PostMapping("/findSelectedWithServer")
+	public  ResponseEntity<Void> findSelected(
+			@RequestParam(value = "bundleIds", required = false) List<Long> bundleIds,
+			@RequestParam(value = "appIds", required = false) List<Long> appIds,
+			@RequestParam(value = "serverParam", required = false) String serverParam)
+	{
 //	        List<AssetBundleEntity> list = assetBundleService.getBundleByIds(bundleIds);
-	        
-	    	if(appIds != null )
-	    		serverParam += " -appid=" + VirtualStartUpApplication.PhotonAppID.get((int)(long)appIds.get(0));
-	    	
-	    	if(bundleIds == null)
-	    		serverService.start(serverParam);
-	    	
+
+		if(appIds != null )
+			serverParam += " -appid=" + VirtualStartUpApplication.PhotonAppID.get((int)(long)appIds.get(0));
+
+		if(bundleIds == null)
+			serverService.start(serverParam);
+
 //	    	System.out.println("appIds : " + appIds.toString()); 
-	    	
-	    	if(bundleIds != null && bundleIds.size()>0)
-	    		serverService.start(bundleIds, serverParam);
-	        
-	      
-	        return getRedirect("/api/assetbundles/bundleList"); // 302 Redirect
-	    }
-	    
-	    
-	    ResponseEntity<Void> getRedirect(String url)
-	    {
-	    	HttpHeaders headers = new HttpHeaders();
-	        headers.setLocation(URI.create(url));
-	        return new ResponseEntity<>(headers, HttpStatus.FOUND); // 302 Redire
-	    }
-	    
-	    @GetMapping("/downloadBundleById/{id}")
-	    public ResponseEntity<byte[]> downloadBundleById(@PathVariable Long id) {
-	        Optional<AssetBundleEntity> optional = assetBundleRepository.findById(id);
-	        if (optional.isEmpty()) return ResponseEntity.notFound().build();
 
-	        AssetBundleEntity bundle = optional.get();
-	        Path path = Paths.get(bundle.getFilePath()[0]);
+		if(bundleIds != null && bundleIds.size()>0)
+			serverService.start(bundleIds, serverParam);
 
-	        try {
-	            byte[] data = Files.readAllBytes(path);
-	            return ResponseEntity.ok()
-	                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + path.getFileName())
-	                    .body(data);
-	        } catch (IOException e) {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	        }
-	    }
-	    
-	    @GetMapping("/downloadBundleById/{id}/{platform}")
-	    public ResponseEntity<byte[]> downloadBundleById(@PathVariable Long id, @PathVariable String platform) {
-	        Optional<AssetBundleEntity> optional = assetBundleRepository.findById(id);
-	        if (optional.isEmpty()) return ResponseEntity.notFound().build();
 
-	        AssetBundleEntity bundle = optional.get();
-	        Path path = Paths.get(bundle.getFilePath()[0]);
-	        
-	        if(platform.equals("and"))
-	        	path = Paths.get(bundle.getFilePath()[1]);	        
+		return getRedirect("/api/assetbundles/bundleList"); // 302 Redirect
+	}
 
-	        try {
-	            byte[] data = Files.readAllBytes(path);
-	            return ResponseEntity.ok()
-	                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + path.getFileName())
-	                    .body(data);
-	        } catch (IOException e) {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	        }
-	    }
+
+	ResponseEntity<Void> getRedirect(String url)
+	{
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(URI.create(url));
+		return new ResponseEntity<>(headers, HttpStatus.FOUND); // 302 Redire
+	}
+
+	@GetMapping("/downloadBundleById/{id}")
+	public ResponseEntity<byte[]> downloadBundleById(@PathVariable Long id) {
+		Optional<AssetBundleEntity> optional = assetBundleRepository.findById(id);
+		if (optional.isEmpty()) return ResponseEntity.notFound().build();
+
+		AssetBundleEntity bundle = optional.get();
+		Path path = Paths.get(bundle.getFilePath().get(0));
+
+		try {
+			byte[] data = Files.readAllBytes(path);
+			return ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + path.getFileName())
+					.body(data);
+		} catch (IOException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+	@GetMapping("/downloadBundleById/{id}/{platform}")
+	public ResponseEntity<byte[]> downloadBundleById(@PathVariable Long id, @PathVariable String platform) {
+		Optional<AssetBundleEntity> optional = assetBundleRepository.findById(id);
+		if (optional.isEmpty()) return ResponseEntity.notFound().build();
+
+		AssetBundleEntity bundle = optional.get();
+		Path path = Paths.get(bundle.getFilePath().get(0));
+
+		if(platform.equals("and"))
+			path = Paths.get(bundle.getFilePath().get(1));
+
+		try {
+			byte[] data = Files.readAllBytes(path);
+			return ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + path.getFileName())
+					.body(data);
+		} catch (IOException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
 }

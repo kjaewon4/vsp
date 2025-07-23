@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: commonHead}">
+</head>
+<link rel="stylesheet" th:href="@{/css/items.css}">
+<body>
+<!-- Header fragment -->
+<div th:replace="~{fragments/header :: commonHeader}"></div>
+
+<div class="container">
+    <div class="title-section">
+        <h2>창업 아이템 존</h2>
+        <p>다양한 창업 아이템을 둘러보세요</p>
+    </div>
+
+    <form method="get" action="/api/assetbundles/bundleList" class="filters">
+        <select class="filter-select" name="category">
+            <option value="">All Categories</option>
+            <option th:each="c : ${categories}"
+                    th:value="${c.name()}"
+                    th:text="${c.displayName}"
+                    th:selected="${c.name() == param.category}">카테고리</option>
+        </select>
+
+<!--        <select class="filter-select" name="status">-->
+<!--            <option value="">All Status</option>-->
+<!--            <option th:each="s : ${statuses}"-->
+<!--                    th:value="${s.name()}"-->
+<!--                    th:text="${s.displayName}"-->
+<!--                    th:selected="${s.name() == param.status}">상태</option>-->
+<!--        </select>-->
+
+        <button type="submit" class="filter-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 01.8 1.6l-4.6 6.1V16a1 1 0 01-1.447.894l-2-1A1 1 0 018 15v-3.3L3.2 5.6A1 1 0 013 5z" clip-rule="evenodd"/>
+            </svg>
+            <span>Filter 적용</span>
+        </button>
+    </form>
+
+
+
+    <!-- 번들 목록을 동적으로 표시 -->
+    <div th:each="bundle : ${bundleList}" class="item-card">
+        <a th:href="@{/api/assetbundles/{id}(id=${bundle.id})}" style="text-decoration: none; color: inherit; display: block; height: 100%;">
+            <div class="item-header">
+                <h3 th:text="${bundle.bundleTitle}">번들 제목</h3>
+            </div>
+            <p class="author">by <span th:text="${bundle.author?.profile?.nickname != null ? bundle.author.profile.nickname : '-'}">사용자 닉네임</span></p>
+            <span class="category" th:classappend="${bundle.category != null ? bundle.category.name().toLowerCase() : '-'}" th:text="${bundle.category != null ? bundle.category.displayName : '-'}">카테고리</span>
+            <p class="desc" th:text="${bundle.bundleDescription}">번들 설명</p>
+            <div class="item-footer">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+                <span th:text="${bundle.views} + ' views'">조회수</span>
+                <span>·</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span th:text="${#temporals.format(bundle.createdAt, 'yyyy-MM-dd')}">생성일</span>
+            </div>
+        </a>
+    </div>
+
+</div>
+</body>
+</html>
