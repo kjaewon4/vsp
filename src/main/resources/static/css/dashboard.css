@@ -6,6 +6,17 @@
     background: #ffffff;
 }
 
+/* ── 헤더 고정 ── */
+.vsp-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Ensure it stays on top */
+    background: #ffffff; /* Add background to prevent content showing through */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: add a subtle shadow */
+}
+
 /* ── 사이드바 ── */
 .dashboard-sidebar {
     width: 280px;
@@ -41,6 +52,7 @@
 .sidebar-menu {
     display: flex;
     flex-direction: column;
+    gap: 16px;
 }
 .sidebar-menu-item {
     display: block;
@@ -64,6 +76,57 @@
     padding: 40px 60px;
     overflow-y: auto;
     margin-left: 280px; /* Add margin to account for fixed sidebar */
+}
+
+/* 관리자 페이지 및 대시보드 프래그먼트 내 제목 스타일 통일 */
+.dashboard-main h2 {
+    font-size: 1.8rem; /* 적절한 크기로 조정 */
+    color: #262f50;
+    margin-bottom: 24px;
+    text-align: left; /* 필요에 따라 정렬 */
+}
+
+.dashboard-main h3 {
+    font-size: 1.4rem; /* 적절한 크기로 조정 */
+    color: #262f50;
+    margin-bottom: 16px;
+    text-align: left; /* 필요에 따라 정렬 */
+}
+
+/* .title-section 내 h2는 이미 스타일이 있으므로, 필요에 따라 조정 */
+.dashboard-main .title-section h2 {
+    font-size: 2rem; /* 더 큰 제목 */
+    margin-bottom: 10px;
+}
+
+/* 번들 서버 관리 페이지 테이블 스타일 조정 */
+.dashboard-main .data-table-wrapper { /* 테이블을 감싸는 div에 적용할 클래스 */
+    overflow-x: auto; /* 테이블이 넘칠 경우 가로 스크롤 */
+    margin-bottom: 20px;
+}
+
+.dashboard-main .data-table {
+    width: 100%;
+    min-width: 800px; /* 최소 너비 설정 (필요에 따라 조정) */
+    border-collapse: collapse;
+    font-size: 0.9rem; /* 폰트 크기 줄이기 */
+}
+
+.dashboard-main .data-table th,
+.dashboard-main .data-table td {
+    padding: 8px 10px; /* 패딩 줄이기 */
+    white-space: normal; /* 텍스트 줄 바꿈 허용 */
+    word-break: break-word; /* 긴 단어 강제 줄 바꿈 */
+}
+
+.dashboard-main .data-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: left;
+}
+
+.dashboard-main .data-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
 /* 프로필 카드 */
@@ -139,11 +202,13 @@
 .profile-info {
     display: flex;
     flex-direction: column;
+    gap: 24px; /* Increased gap */
 }
 
 /* 개별 정보 행 */
 .info-row {
-    display: flex;
+    display: grid; /* Use grid for consistent columns */
+    grid-template-columns: 28px 1fr; /* Fixed width for icon, rest for text */
     align-items: center;
     gap: 12px;
 }
@@ -373,3 +438,5 @@
 .author span {
     vertical-align: middle;
 }
+
+

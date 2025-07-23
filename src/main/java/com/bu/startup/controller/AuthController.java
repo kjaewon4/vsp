@@ -60,7 +60,7 @@ public class AuthController {
     @GetMapping("/home")
     public String home(Model model, Principal principal) {
         model.addAttribute("username", principal.getName());
-        model.addAttribute("assetBundles", assetBundleService.getAllBundles());
+//        model.addAttribute("assetBundles", assetBundleService.getAllBundles());
         return "home";
     }
 }

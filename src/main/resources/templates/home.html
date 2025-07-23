@@ -3,28 +3,28 @@
 <head th:replace="~{fragments/head :: commonHead}">
     <title>Home</title>
 </head>
-<body>
+<body style="padding-top: 72px;">
 
 <header th:replace="fragments/header :: commonHeader"></header>
 
-<div class="container mt-5 background-[#fafbff]">
-    <div class="title-section">
-        <h2>창업 아이템 존</h2>
-        <p>다양한 창업 아이템을 둘러보세요</p>
-    </div>
+<!--<div class="container mt-5 background-[#fafbff]">-->
+<!--    <div class="title-section">-->
+<!--        <h2>창업 아이템 존</h2>-->
+<!--        <p>다양한 창업 아이템을 둘러보세요</p>-->
+<!--    </div>-->
 
-    <div class="row">
-        <div class="col-md-4 mb-4" th:each="bundle : ${assetBundles}">
-            <div class="card" style="background: #fff; border-radius: 15px; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); padding: 26px 30px;">
-                <div class="card-body">
-                    <h5 class="card-title"><a th:href="@{/api/assetbundles/{id}(id=${bundle.id})}" th:text="${bundle.bundleTitle}">Bundle Title</a></h5>
-                    <p class="card-text" th:text="${bundle.bundleDescription}">Bundle Description</p>
-                    <p class="card-text"><small class="text-muted">Uploaded: <span th:text="${#temporals.format(bundle.createdAt, 'yyyy-MM-dd HH:mm')}"></span></small></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--    <div class="row">-->
+<!--        <div class="col-md-4 mb-4" th:each="bundle : ${assetBundles}">-->
+<!--            <div class="card" style="background: #fff; border-radius: 15px; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); padding: 26px 30px;">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title"><a th:href="@{/api/assetbundles/{id}(id=${bundle.id})}" th:text="${bundle.bundleTitle}">Bundle Title</a></h5>-->
+<!--                    <p class="card-text" th:text="${bundle.bundleDescription}">Bundle Description</p>-->
+<!--                    <p class="card-text"><small class="text-muted">Uploaded: <span th:text="${#temporals.format(bundle.createdAt, 'yyyy-MM-dd HH:mm')}"></span></small></p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 </body>
 </html>

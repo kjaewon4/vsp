@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.function.Supplier;
 
 import com.bu.startup.entity.Post;
 import com.bu.startup.type.CategoryType;
@@ -15,6 +16,10 @@ import com.bu.startup.type.ItemStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
@@ -243,8 +248,13 @@ public class AssetBundleController {
 	    }
 	    
 	    @GetMapping("/getBundleList")
-	    public List<AssetBundleEntity> getBundleList() {
-	        return assetBundleService.getAllBundles();
+	    public Page<AssetBundleEntity> getBundleList(@RequestParam(defaultValue = "0") int page,
+													 @RequestParam(defaultValue = "12") int size) {
+
+			Page<AssetBundleEntity> bundlePage;
+			Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+			return assetBundleService.getAllBundles(pageable);
 	    }
 	    
 	    @GetMapping("/serverRoomList")
@@ -261,14 +271,15 @@ public class AssetBundleController {
 	 * @throws JsonProcessingException
 	 */
 	@GetMapping("/admin/bundleList")
-	public ModelAndView listBundles(Authentication authentication) throws JsonProcessingException {
+	public ModelAndView listBundles(Authentication authentication, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
 
 		if(authentication == null) return new ModelAndView("login");
 
 		String userId = authentication.getName();
 
 		ModelAndView mav = new ModelAndView("admin/assetBundle");
-		mav.addObject("assetBundles", assetBundleService.getAllBundles());
+		Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+		mav.addObject("assetBundles", assetBundleService.getAllBundles(pageable));
 
 		String appid = VirtualStartUpApplication.PhotonAppID.get(0);
 		String args = String.format(
@@ -319,6 +330,8 @@ public class AssetBundleController {
 	public ModelAndView listBundlesOnly(
 			@RequestParam(required = false) CategoryType category,
 			@RequestParam(required = false) ItemStatus status,
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "12") int size,
 			Authentication authentication) {
 		if(authentication == null) return new ModelAndView("login");
 
@@ -332,7 +345,8 @@ public class AssetBundleController {
 			targetStatuses = Arrays.asList(ItemStatus.APPROVED, ItemStatus.ARCHIVED);
 		}
 
-		List<AssetBundleEntity> bundleList;
+		Page<AssetBundleEntity> bundlePage;
+		Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
 		// 1. status 파라미터가 있으면, 해당 status가 targetStatuses에 포함된 경우만 조회
 		List<ItemStatus> filteredStatuses;
@@ -349,13 +363,13 @@ public class AssetBundleController {
 
 		// 2. category+status, category만, status만, 둘 다 없을 때 모두 일관성 있게 처리
 		if (category != null) {
-			bundleList = assetBundleService.getBundlesByCategoryAndStatuses(category, filteredStatuses);
+			bundlePage = assetBundleService.getBundlesByCategoryAndStatuses(category, filteredStatuses, pageable);
 		} else {
-			bundleList = assetBundleService.getBundlesByStatuses(filteredStatuses);
+			bundlePage = assetBundleService.getBundlesByStatuses(filteredStatuses, pageable);
 		}
 
 		ModelAndView mav = new ModelAndView("/bundleList");
-		mav.addObject("bundleList", bundleList);
+		mav.addObject("bundlePage", bundlePage);
 		mav.addObject("categories", CategoryType.values());
 		mav.addObject("statuses", targetStatuses);
 		return mav;

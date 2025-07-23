@@ -10,6 +10,10 @@ import com.bu.startup.type.ItemStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -145,22 +149,24 @@ public class DashboardController {
     }
 
     @GetMapping("/admin/allBundles")
-    public String getAllBundlesFragment(Model model) {
-        model.addAttribute("bundleList", assetBundleService.getAllBundles());
+    public String getAllBundlesFragment(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        model.addAttribute("bundlePage", assetBundleService.getAllBundles(pageable));
         model.addAttribute("categories", CategoryType.values());
         model.addAttribute("statuses", ItemStatus.values());
         return "bundleList";
     }
 
     @GetMapping("/admin/serverManagement")
-    public ModelAndView getServerManagementFragment(Authentication authentication) throws JsonProcessingException {
+    public ModelAndView getServerManagementFragment(Authentication authentication, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
         // 이전에 AssetBundleController에 있던 로직을 그대로 가져옵니다.
         if(authentication == null) return new ModelAndView("login");
 
         String userId = authentication.getName();
 
         ModelAndView mav = new ModelAndView("admin/assetBundle");
-        mav.addObject("assetBundles", assetBundleService.getAllBundles());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        mav.addObject("assetBundles", assetBundleService.getAllBundles(pageable));
 
         String appid = VirtualStartUpApplication.PhotonAppID.get(0);
         String args = String.format(

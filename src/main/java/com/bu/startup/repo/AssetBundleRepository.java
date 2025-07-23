@@ -6,6 +6,8 @@ import java.util.Optional;
 import com.bu.startup.entity.User;
 import com.bu.startup.type.CategoryType;
 import com.bu.startup.type.ItemStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,8 +21,8 @@ public interface AssetBundleRepository extends JpaRepository<AssetBundleEntity, 
     List<AssetBundleEntity> findByCategory(CategoryType category);
     List<AssetBundleEntity> findByStatus(ItemStatus status);
 
-    List<AssetBundleEntity> findByCategoryAndStatusIn(CategoryType category, List<ItemStatus> statuses);
+    Page<AssetBundleEntity> findByCategoryAndStatusIn(CategoryType category, List<ItemStatus> statuses, Pageable pageable);
 
-    List<AssetBundleEntity> findByStatusIn(List<ItemStatus> statuses);
+    Page<AssetBundleEntity> findByStatusIn(List<ItemStatus> statuses, Pageable pageable);
     List<AssetBundleEntity> findByAuthor(User author);
 }

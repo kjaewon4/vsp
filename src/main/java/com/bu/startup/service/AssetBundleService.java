@@ -11,6 +11,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.bu.startup.entity.User;
 import com.bu.startup.type.CategoryType;
 import com.bu.startup.type.ItemStatus;
@@ -87,8 +90,8 @@ public class AssetBundleService {
         return assetBundleRepository.save(bundle);
     }
 
-    public List<AssetBundleEntity> getAllBundles() {
-        return assetBundleRepository.findAll();
+    public Page<AssetBundleEntity> getAllBundles(Pageable pageable) {
+        return assetBundleRepository.findAll(pageable);
     }
 
     public Optional<AssetBundleEntity> getBundleById(Long id) {
@@ -159,15 +162,15 @@ public class AssetBundleService {
     }
 
     // 여러 상태로 조회
-    public List<AssetBundleEntity> getBundlesByCategoryAndStatuses(CategoryType category, List<ItemStatus> statuses) {
-        if (statuses.isEmpty()) return Collections.emptyList();
-        return assetBundleRepository.findByCategoryAndStatusIn(category, statuses);
+    public Page<AssetBundleEntity> getBundlesByCategoryAndStatuses(CategoryType category, List<ItemStatus> statuses, Pageable pageable) {
+        if (statuses.isEmpty()) return Page.empty();
+        return assetBundleRepository.findByCategoryAndStatusIn(category, statuses, pageable);
     }
 
     // status 컬럼의 값이 주어진 리스트에 포함된 값 중 하나인 데이터만 조회
-    public List<AssetBundleEntity> getBundlesByStatuses(List<ItemStatus> statuses) {
-        if (statuses.isEmpty()) return Collections.emptyList();
-        return assetBundleRepository.findByStatusIn(statuses);
+    public Page<AssetBundleEntity> getBundlesByStatuses(List<ItemStatus> statuses, Pageable pageable) {
+        if (statuses.isEmpty()) return Page.empty();
+        return assetBundleRepository.findByStatusIn(statuses, pageable);
     }
 
     public List<AssetBundleEntity> getBundlesByAuthor(User author) {

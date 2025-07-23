@@ -8,7 +8,7 @@
 	<script th:src="@{/js/assetBundle.js}"></script>
     <link rel="stylesheet" th:href="@{/css/admin.css}" />
 
-<body>
+<body style="padding-top: 72px;" class="asset-bundle-page">
 <div th:replace="~{fragments/header :: commonHeader}"></div>
 
 <div class="main-content">
@@ -22,56 +22,76 @@
         <div class="item-card">
             <h3>AssetBundle 목록</h3>
             <form method="post" th:action="@{/api/assetbundles/deleteSelected}">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="selectAllBundles" /></th>
-                            <th>ID</th>
-                            <th>번들 이름</th>
-                            <th>파일 경로-윈도우</th>
-                            <th>파일 경로-안드로이드</th>
-                            <th>번들 타이틀</th>
-                            <th>번들 설명</th>
-                            <th>업로드 시간</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="bundle : ${assetBundles}">
-                            <td><input type="checkbox" name="bundleIds" th:value="${bundle.id}" /></td>
-                            <td th:text="${bundle.id}"></td>
-                            <td th:text="${bundle.bundleName}"></td>
-                            <td th:text="${bundle.filePath != null and bundle.filePath.size() > 0 ? bundle.filePath.get(0) : '-'}"></td>
-                            <td th:text="${bundle.filePath != null and bundle.filePath.size() > 1 ? bundle.filePath.get(1) : '-'}"></td>
-                            <td th:text="${bundle.bundleTitle}"></td>
-                            <td th:text="${bundle.bundleDescription}"></td>
-                            <td th:text="${bundle.createdAt}"></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="selectAllBundles" /></th>
+                                <th>ID</th>
+                                <th>번들 이름</th>
+                                <th>파일 경로-윈도우</th>
+                                <th>파일 경로-안드로이드</th>
+                                <th>번들 타이틀</th>
+                                <th>번들 설명</th>
+                                <th>업로드 시간</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="bundle : ${assetBundles}">
+                                <td><input type="checkbox" name="bundleIds" th:value="${bundle.id}" /></td>
+                                <td th:text="${bundle.id}"></td>
+                                <td th:text="${bundle.bundleName}"></td>
+                                <td th:text="${bundle.filePath != null and bundle.filePath.size() > 0 ? bundle.filePath.get(0) : '-'}"></td>
+                                <td th:text="${bundle.filePath != null and bundle.filePath.size() > 1 ? bundle.filePath.get(1) : '-'}"></td>
+                                <td th:text="${bundle.bundleTitle}"></td>
+                                <td th:text="${bundle.bundleDescription}"></td>
+                                <td th:text="${#temporals.format(bundle.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <button type="submit" class="button-primary">선택 삭제</button>
             </form>
+
+            <!-- 페이지네이션 -->
+            <div class="pagination-container" th:if="${assetBundles.totalPages > 1}">
+                <ul class="pagination">
+                    <li th:classappend="${assetBundles.isFirst()} ? 'disabled' : ''">
+                        <a th:href="@{/api/assetbundles/admin/bundleList(page=${assetBundles.number - 1}, size=${assetBundles.size})}">이전</a>
+                    </li>
+                    <li th:each="i : ${#numbers.sequence(0, assetBundles.totalPages - 1)}"
+                        th:classappend="${i == assetBundles.number} ? 'active' : ''">
+                        <a th:href="@{/api/assetbundles/admin/bundleList(page=${i}, size=${assetBundles.size})}" th:text="${i + 1}"></a>
+                    </li>
+                    <li th:classappend="${assetBundles.isLast()} ? 'disabled' : ''">
+                        <a th:href="@{/api/assetbundles/admin/bundleList(page=${assetBundles.number + 1}, size=${assetBundles.size})}">다음</a>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <div class="item-card">
             <h3>AppID 목록</h3>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>선택</th>
-                        <th>ID</th>
-                        <th>AppID</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="list : ${appidList}">
-                        <td>
-                            <input type="radio" name="appIds" th:value="${list.num}" />
-                        </td>
-                        <td th:text="${list.num}"></td>
-                        <td th:text="${list.appid}"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="data-table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>선택</th>
+                            <th>ID</th>
+                            <th>AppID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="list : ${appidList}">
+                            <td>
+                                <input type="radio" name="appIds" th:value="${list.num}" />
+                            </td>
+                            <td th:text="${list.num}"></td>
+                            <td th:text="${list.appid}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
             
         <div class="item-card">
@@ -90,30 +110,32 @@
         <div class="item-card">
             <h3>실행 중인 서버 목록</h3>
             <form method="post" th:action="@{/api/assetbundles/killServer}" >
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>선택</th>
-                            <th>방 이름</th>
-                            <th>사용자</th>
-                            <th>모드</th>
-                            <th>씬 이름</th>
-                            <th>시작 시간</th>
-                            <th>앱아이디</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="server : ${serversJson}">
-                            <td><input type="checkbox" name="serverIds" th:value="${server.appid}+'/'+${server.room}"/></td>
-                            <td th:text="${server.room}"></td>
-                            <td th:text="${server.username}"></td>
-                            <td th:text="${server.mode}"></td>
-                            <td th:text="${server.scenename}"></td>
-                            <td th:text="${server.startedAt}"></td>
-                            <td th:text="${server.appid}"></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>선택</th>
+                                <th>방 이름</th>
+                                <th>사용자</th>
+                                <th>모드</th>
+                                <th>씬 이름</th>
+                                <th>시작 시간</th>
+                                <th>앱아이디</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="server : ${serversJson}">
+                                <td><input type="checkbox" name="serverIds" th:value="${server.appid}+'/'+${server.room}"/></td>
+                                <td th:text="${server.room}"></td>
+                                <td th:text="${server.username}"></td>
+                                <td th:text="${server.mode}"></td>
+                                <td th:text="${server.scenename}"></td>
+                                <td th:text="${server.startedAt}"></td>
+                                <td th:text="${server.appid}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <button type="submit" onclick="return confirmKill()" class="button-danger">서버 종료</button>
             </form>
         </div>

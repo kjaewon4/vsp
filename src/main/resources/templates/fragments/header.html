@@ -27,37 +27,27 @@
             <a th:href="@{/login}" sec:authorize="isAnonymous()" class="login-button">로그인</a>
             <div sec:authorize="isAuthenticated()" class="user-dropdown">
                 <div class="user-avatar" onclick="toggleDropdown()">
-                    <!-- 프로필 이미지, 없으면 기본이미지 -->
-                    <img id="profileImg" th:src="@{/images/man_profile.png}" alt="profile" />
+                    <!-- 프로필 이미지 -->
+                    <img th:src="${#authorization.expression('hasRole(''ROLE_ADMIN'')')
+                       ? '/img/admin_profile.png'
+                       : '/img/man_profile.png'}"
+                         alt="프로필" />
                 </div>
                 <div id="userDropdownMenu" class="dropdown-menu" style="display: none;">
                     <div class="dropdown-header">
                         <span class="user-name" sec:authentication="name"></span>
                         <span class="welcome-text">WELCOME</span>
                     </div>
-                    <a th:href="@{/dashboard}" class="mypage-button dropdown-btn">마이페이지</a>
-<!--                    <a th:href="@{/dashboard(fragment='user/likedBundles')}" class="dropdown-btn">-->
-<!--                        찜한 아이템 <span class="heart">&#9829;</span>-->
-<!--                    </a>-->
+                    <a th:href="@{/dashboard}" class="mypage-button dropdown-btn">
+                        <span sec:authorize="hasRole('ROLE_ADMIN')">관리자페이지</span>
+                        <span sec:authorize="!hasRole('ROLE_ADMIN')">마이페이지</span>
+                    </a>
                     <a th:href="@{/logout}" class="dropdown-btn logout">로그아웃</a>
                 </div>
             </div>
         </div>
     </header>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var isAdmin = /*[[${isAdmin}]]*/ false;
-            var profileImg = document.getElementById('profileImg');
-            if (profileImg) {
-                if (isAdmin) {
-                    profileImg.src = '/img/admin_profile.png';
-                } else {
-                    var imgs = ['/img/man_profile.png', '/img/woman_profile.png'];
-                    profileImg.src = imgs[Math.floor(Math.random() * imgs.length)];
-                }
-            }
-        });
-
         function toggleDropdown() {
             var menu = document.getElementById('userDropdownMenu');
             menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';

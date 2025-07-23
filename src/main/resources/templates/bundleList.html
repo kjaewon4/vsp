@@ -3,7 +3,7 @@
 <head th:replace="~{fragments/head :: commonHead}">
 </head>
 <link rel="stylesheet" th:href="@{/css/items.css}">
-<body>
+<body style="padding-top: 72px;">
 <!-- Header fragment -->
 <div th:replace="~{fragments/header :: commonHeader}"></div>
 
@@ -41,7 +41,7 @@
 
 
     <!-- 번들 목록을 동적으로 표시 -->
-    <div th:each="bundle : ${bundleList}" class="item-card">
+    <div th:each="bundle : ${bundlePage.content}" class="item-card">
         <a th:href="@{/api/assetbundles/{id}(id=${bundle.id})}" style="text-decoration: none; color: inherit; display: block; height: 100%;">
             <div class="item-header">
                 <h3 th:text="${bundle.bundleTitle}">번들 제목</h3>
@@ -68,8 +68,24 @@
         </a>
     </div>
 
-    <div th:if="${#lists.isEmpty(bundleList)}" style="font-size: 14px; color: #666; text-align: center; margin-top: 20px;">
+    <div th:if="${bundlePage.empty}" style="font-size: 14px; color: #666; text-align: center; margin-top: 20px;">
         검색 조건에 해당하는 번들이 존재하지 않습니다.
+    </div>
+
+    <!-- 페이지네이션 -->
+    <div class="pagination-container" th:if="${bundlePage.totalPages > 1}">
+        <ul class="pagination">
+            <li th:classappend="${bundlePage.isFirst()} ? 'disabled' : ''">
+                <a th:href="@{/api/assetbundles/bundleList(page=${bundlePage.number - 1}, size=${bundlePage.size}, category=${param.category}, status=${param.status})}">이전</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, bundlePage.totalPages - 1)}"
+                th:classappend="${i == bundlePage.number} ? 'active' : ''">
+                <a th:href="@{/api/assetbundles/bundleList(page=${i}, size=${bundlePage.size}, category=${param.category}, status=${param.status})}" th:text="${i + 1}"></a>
+            </li>
+            <li th:classappend="${bundlePage.isLast()} ? 'disabled' : ''">
+                <a th:href="@{/api/assetbundles/bundleList(page=${bundlePage.number + 1}, size=${bundlePage.size}, category=${param.category}, status=${param.status})}">다음</a>
+            </li>
+        </ul>
     </div>
 
 </div>
