@@ -35,10 +35,10 @@
                         <span class="user-name" sec:authentication="name"></span>
                         <span class="welcome-text">WELCOME</span>
                     </div>
-                    <a th:href="@{/dashboard}" class="mypage-button">마이페이지</a>
-                    <a th:href="@{/user/liked}" class="dropdown-btn">
-                        찜한 아이템 <span class="heart">&#9829;</span>
-                    </a>
+                    <a th:href="@{/dashboard}" class="mypage-button dropdown-btn">마이페이지</a>
+<!--                    <a th:href="@{/dashboard(fragment='user/likedBundles')}" class="dropdown-btn">-->
+<!--                        찜한 아이템 <span class="heart">&#9829;</span>-->
+<!--                    </a>-->
                     <a th:href="@{/logout}" class="dropdown-btn logout">로그아웃</a>
                 </div>
             </div>

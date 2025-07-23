@@ -34,7 +34,8 @@ public class DashboardController {
     private final LikeService likeService;
 
     @GetMapping
-    public String showDashboard(Authentication authentication, Model model) {
+    public String showDashboard(Authentication authentication, Model model,
+                                @RequestParam(name = "fragment", required = false) String fragmentName) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login";
         }

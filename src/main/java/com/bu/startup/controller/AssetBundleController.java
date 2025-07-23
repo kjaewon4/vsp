@@ -329,7 +329,7 @@ public class AssetBundleController {
 		if (isAdmin) {
 			targetStatuses = Arrays.asList(ItemStatus.values());
 		} else {
-			targetStatuses = Arrays.asList(ItemStatus.PENDING, ItemStatus.ARCHIVED);
+			targetStatuses = Arrays.asList(ItemStatus.APPROVED, ItemStatus.ARCHIVED);
 		}
 
 		List<AssetBundleEntity> bundleList;
