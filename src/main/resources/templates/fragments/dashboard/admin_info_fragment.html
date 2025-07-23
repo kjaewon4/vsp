@@ -1,0 +1,23 @@
+<div th:fragment="admin_info_fragment">
+    <div class="profile-card">
+        <h2>관리자 정보</h2>
+        <ul class="profile-info-list">
+            <li>
+                <span class="icon">🆔</span>
+                <span>아이디: <span th:text="${admin.username}"></span></span>
+            </li>
+            <li>
+                <span class="icon">📧</span>
+                <span>이메일: <span th:text="${profile.email}"></span></span>
+            </li>
+            <li>
+                <span class="icon">💰</span>
+                <span>지갑 주소: <span th:text="${wallet != null ? wallet.address : '-'}"></span></span>
+            </li>
+            <li>
+                <span class="icon">💵</span>
+                <span>지갑 잔액: <span th:text="${wallet != null ? #numbers.formatDecimal(wallet.balance, 0, 'COMMA', 2, 'POINT') : '-'}"></span> KRW</span>
+            </li>
+        </ul>
+    </div>
+</div>

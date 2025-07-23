@@ -1,50 +1,74 @@
-<!-- templates/fragments/header.html -->
 <div th:fragment="commonHeader" xmlns:th="http://www.thymeleaf.org"
      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <header class="vsp-header">
-        <div class="vsp-left">
-            <div class="vsp-logo">
-                <a th:href="@{/home}">VSP</a>
-            </div>
-
+        <div class="vsp-header-left">
+            <a th:href="@{/home}" class="vsp-logo">VSP</a>
             <nav class="vsp-nav">
                 <ul>
-                    <!-- 로그인한 모든 사용자에게 보이는 메뉴 -->
                     <li sec:authorize="isAuthenticated()">
                         <a th:href="@{/api/assetbundles/bundleList}">창업아이템</a>
                     </li>
-
-                    <!-- 로그인한 모든 사용자에게 보이는 번들 등록 메뉴 -->
                     <li sec:authorize="isAuthenticated()">
                         <a th:href="@{/api/assetbundles/uploadForm}">번들 등록</a>
                     </li>
-
-                    <!-- 관리자에게만 보이는 메뉴 -->
                     <li sec:authorize="hasRole('ROLE_ADMIN')">
                         <a th:href="@{/api/assetbundles/admin/bundleList}">Bundle서버 관리</a>
                     </li>
-
                     <li sec:authorize="hasRole('ROLE_ADMIN')">
                         <a th:href="@{/admin/pendingBundles}">번들 승인 대기</a>
                     </li>
                 </ul>
             </nav>
         </div>
-
-        <!-- 검색창 추가 -->
-        <div class="vsp-search">
+        <div class="vsp-header-center">
             <input type="text" class="search-input" placeholder="아이템 이름과 등록자 이름으로 검색하세요." />
         </div>
-
-        <div class="vsp-actions">
-            <!-- 로그인하지 않았을 때 -->
+        <div class="vsp-header-right">
             <a th:href="@{/login}" sec:authorize="isAnonymous()" class="login-button">로그인</a>
-
-            <!-- 로그인했을 때 -->
-            <div sec:authorize="isAuthenticated()" class="user-info">
-                <span sec:authentication="name"></span>님, 환영합니다!
-                <a th:href="@{/logout}" class="logout-button">로그아웃</a>
+            <div sec:authorize="isAuthenticated()" class="user-dropdown">
+                <div class="user-avatar" onclick="toggleDropdown()">
+                    <!-- 프로필 이미지, 없으면 기본이미지 -->
+                    <img id="profileImg" th:src="@{/images/man_profile.png}" alt="profile" />
+                </div>
+                <div id="userDropdownMenu" class="dropdown-menu" style="display: none;">
+                    <div class="dropdown-header">
+                        <span class="user-name" sec:authentication="name"></span>
+                        <span class="welcome-text">WELCOME</span>
+                    </div>
+                    <a th:href="@{/dashboard}" class="mypage-button">마이페이지</a>
+                    <a th:href="@{/user/liked}" class="dropdown-btn">
+                        찜한 아이템 <span class="heart">&#9829;</span>
+                    </a>
+                    <a th:href="@{/logout}" class="dropdown-btn logout">로그아웃</a>
+                </div>
             </div>
         </div>
     </header>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var isAdmin = /*[[${isAdmin}]]*/ false;
+            var profileImg = document.getElementById('profileImg');
+            if (profileImg) {
+                if (isAdmin) {
+                    profileImg.src = '/img/admin_profile.png';
+                } else {
+                    var imgs = ['/img/man_profile.png', '/img/woman_profile.png'];
+                    profileImg.src = imgs[Math.floor(Math.random() * imgs.length)];
+                }
+            }
+        });
+
+        function toggleDropdown() {
+            var menu = document.getElementById('userDropdownMenu');
+            menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
+        }
+        // 바깥 클릭 시 드롭다운 닫기
+        document.addEventListener('click', function(event) {
+            var dropdown = document.getElementById('userDropdownMenu');
+            var avatar = document.querySelector('.user-avatar');
+            if (!dropdown.contains(event.target) && !avatar.contains(event.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+    </script>
 </div>

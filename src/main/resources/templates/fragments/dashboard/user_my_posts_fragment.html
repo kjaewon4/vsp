@@ -1,0 +1,19 @@
+<div th:fragment="user_my_posts_fragment">
+    <h2>내가 작성한 게시글</h2>
+    <div th:if="${#lists.isEmpty(myPosts)}">
+        <p>작성한 게시글이 없습니다.</p>
+    </div>
+    <div th:each="post : ${myPosts}" class="item-card mb-3">
+        <a th:href="@{/posts/{postId}(postId=${post.postId})}" style="text-decoration: none; color: inherit; display: block; height: 100%;">
+            <div class="item-header">
+                <h3 th:text="${post.title}">게시글 제목</h3>
+            </div>
+            <p class="author">번들: <span th:text="${post.assetBundle.bundleTitle}"></span></p>
+            <p class="desc" th:text="${#strings.abbreviate(post.content, 60)}">게시글 내용</p>
+            <div class="item-footer">
+                <span th:text="'작성일: ' + ${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                <span th:if="${post.updatedAt != null and post.updatedAt != post.createdAt}" th:text="' (수정일: ' + ${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')} + ')'"></span>
+            </div>
+        </a>
+    </div>
+</div>

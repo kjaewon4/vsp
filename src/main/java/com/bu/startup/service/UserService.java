@@ -16,6 +16,7 @@ import com.bu.startup.entity.User;
 import com.bu.startup.entity.UserProfile;
 import com.bu.startup.repo.UserProfileRepository;
 import com.bu.startup.repo.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -41,6 +42,7 @@ public class UserService implements UserDetailsService {
         profile.setLevel(1);
         profile.setScore(0);
         profile.setUser(user);
+        profile.setProfileImageUrl(""); // 기본 이미지 URL 설정
 
         user.setProfile(profile);
         userRepository.save(user);
@@ -49,6 +51,21 @@ public class UserService implements UserDetailsService {
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public UserProfile getUserProfile(User user) {
+        return userProfileRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
+    }
+
+    @Transactional
+    public UserProfile updateUserProfile(User user, String nickname, String email, String profileImageUrl) {
+        UserProfile profile = userProfileRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
+        profile.setNickname(nickname);
+        profile.setEmail(email);
+        profile.setProfileImageUrl(profileImageUrl);
+        return userProfileRepository.save(profile);
     }
 
     @Override

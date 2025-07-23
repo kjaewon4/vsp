@@ -170,4 +170,13 @@ public class AssetBundleService {
         return assetBundleRepository.findByStatusIn(statuses);
     }
 
+    public List<AssetBundleEntity> getBundlesByAuthor(User author) {
+        return assetBundleRepository.findByAuthor(author);
+    }
+
+    // 펀딩 기능이 없으므로 임시 스텁
+    public List<AssetBundleEntity> getFundedBundles(User user) {
+        return Collections.emptyList();
+    }
+
 }

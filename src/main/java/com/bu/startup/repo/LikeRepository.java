@@ -8,8 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+import java.util.List;
+
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
     Optional<Like> findByAssetBundleAndUser(AssetBundleEntity assetBundle, User user);
     long countByAssetBundle(AssetBundleEntity assetBundle);
+    List<Like> findByUser(User user);
 }

@@ -1,0 +1,46 @@
+<div th:fragment="userDashboard">
+    <div class="dashboard-wrapper">
+        <!-- 좌측 사이드바 -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-profile">
+                <img th:src="@{${profileImgUrl}}" alt="프로필" class="sidebar-avatar"/>
+                <div class="sidebar-balance">
+                    <div>내 자금</div>
+                    <div>잔액: <span th:text="${balance}"></span> KRW</div>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a th:href="@{/user/profile}" class="sidebar-menu-item">내 정보</a>
+                <a th:href="@{/user/bundleRequests}" class="sidebar-menu-item">번들 요청 내역</a>
+                <a th:href="@{/user/posts}" class="sidebar-menu-item">작성한 게시글</a>
+                <a th:href="@{/user/comments}" class="sidebar-menu-item">작성한 댓글</a>
+                <a th:href="@{/user/liked}" class="sidebar-menu-item">찜한 번들</a>
+            </nav>
+        </aside>
+        <!-- 우측 메인 -->
+        <main class="dashboard-main">
+            <div class="profile-card">
+                <img th:src="@{${profileImgUrl}}" alt="프로필" class="profile-avatar"/>
+                <h2 th:text="${nickname}">닉네임</h2>
+                <ul class="profile-info-list">
+                    <li>
+                        <span class="icon">@</span>
+                        <span th:text="${email}">이메일</span>
+                    </li>
+                    <li>
+                        <span class="icon">🎂</span>
+                        <span th:text="${birthdate}">지갑주소</span>
+                    </li>
+                    <li>
+                        <span class="icon">🗓️</span>
+                        <span th:text="${signupDate}">가입일</span>
+                    </li>
+                    <li>
+                        <span class="icon">🎟️</span>
+                        총 예매횟수 <span th:text="${ticketCount}">0</span>회
+                    </li>
+                </ul>
+            </div>
+        </main>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<div th:fragment="user_profile_fragment">
+    <div class="profile-card">
+        <!-- 아바타 -->
+        <img
+                class="profile-avatar"
+                th:src="${'/img/man_profile.png'}"
+                alt="프로필 이미지"
+        />
+        <!-- 닉네임 -->
+        <h2 class="profile-name" th:text="${profile.profile.nickname}">닉네임</h2>
+
+        <div class="profile-info">
+            <!-- 이메일 -->
+            <div class="info-row">
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8A72F6">
+                    <path d="M2 4a2 2 0 012-2h16a2 2 0 012 2v16a2 2 0 01-2 2H4a2 2 0 01-2-2V4zm2 .5v.511l8 5.333 8-5.333V4.5L12 9.834 4 4.5zM20 6.489l-8 5.333-8-5.333V20h16V6.489z"/>
+                </svg>
+                <div class="info-text">
+                    <div class="label">이메일</div>
+                    <div class="value" th:text="${profile.profile.email}">example@mail.com</div>
+                </div>
+            </div>
+            <hr/>
+
+            <!-- 가입일 -->
+            <div class="info-row">
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8A72F6">
+                    <path d="M7 2a1 1 0 011 1v1h8V3a1 1 0 112 0v1a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2V3a1 1 0 011-1zm0 4v14h12V6H7zm2 2h2v2H9V8zm4 0h2v2h-2V8zm-4 4h2v2H9v-2zm4 0h2v2h-2v-2z"/>
+                </svg>
+                <div class="info-text">
+                    <div class="label">가입일</div>
+                    <div class="value" th:text="${#temporals.format(profile.createdAt, 'yyyy-MM-dd')}">2025-07-24</div>
+                </div>
+            </div>
+            <hr/>
+            <div class="info-row">
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8A72F6">
+                    <!-- Material Wallet Icon -->
+                    <path d="M21 18c1.1 0 2-.9 2-2v-6c0-1.1-.9-2-2-2h-2V4c0-1.1-.9-2-2-2H3C1.9 2 1 2.9 1 4v16h20c1.1 0 2-.9 2-2v-2h-2zM3 4h14v12H3V4z"/>
+                </svg>
+                <div class="info-text">
+                    <div class="label">지갑 주소</div>
+                    <div class="value"
+                         th:text="${profile.walletAddress != null ? profile.walletAddress : '-'}">
+                        -
+                    </div>
+                </div>
+            </div>
+            <hr/>
+
+            <!-- 지갑 잔액 -->
+            <div class="info-row">
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#8A72F6">
+                    <path d="M4 6h16v12H4z" fill="none"/><path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm0 2v12h16V6H4zm2 3h2v2H6V9zm4 0h2v2h-2V9zm4 0h2v2h-2V9z"/>
+                </svg>
+                <div class="info-text">
+                    <div class="label">지갑 잔액</div>
+                    <div class="value" th:text="${#numbers.formatDecimal(profile.balance,0,'COMMA',2,'POINT')} + ' KRW'">0.00 KRW</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

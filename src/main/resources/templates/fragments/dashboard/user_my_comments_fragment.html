@@ -1,0 +1,18 @@
+<div th:fragment="user_my_comments_fragment">
+    <h2>내가 작성한 댓글</h2>
+    <div th:if="${#lists.isEmpty(myComments)}">
+        <p>작성한 댓글이 없습니다.</p>
+    </div>
+    <div th:each="comment : ${myComments}" class="item-card mb-3">
+        <a th:href="@{/posts/{postId}(postId=${comment.post.postId})}" style="text-decoration: none; color: inherit; display: block; height: 100%;">
+            <div class="item-header">
+                <h3 th:text="${comment.post.title}">게시글 제목</h3>
+            </div>
+            <p class="author">댓글 내용: <span th:text="${#strings.abbreviate(comment.content, 60)}"></span></p>
+            <div class="item-footer">
+                <span th:text="'작성일: ' + ${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                <span th:if="${comment.updatedAt != null and comment.updatedAt != comment.createdAt}" th:text="' (수정일: ' + ${#temporals.format(comment.updatedAt, 'yyyy-MM-dd HH:mm')} + ')'"></span>
+            </div>
+        </a>
+    </div>
+</div>

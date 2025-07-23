@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.bu.startup.type.CategoryType;
-import org.springframework.data.domain.Auditable;
 
 @Entity
 @Table(name = "startup_items")

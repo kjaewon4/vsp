@@ -1,9 +1,11 @@
 package com.bu.startup.service;
 
 import com.bu.startup.entity.AssetBundleEntity;
+import com.bu.startup.entity.Comment;
 import com.bu.startup.entity.Post;
 import com.bu.startup.entity.User;
 import com.bu.startup.repo.AssetBundleRepository;
+import com.bu.startup.repo.CommentRepository;
 import com.bu.startup.repo.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final AssetBundleRepository assetBundleRepository;
+    private final CommentRepository commentRepository; // CommentRepository 주입
 
     @Transactional
     public Post createPost(Long assetBundleId, String title, String content, User author) {
@@ -67,5 +70,15 @@ public class PostService {
         post.setTitle(title);
         post.setContent(content);
         return postRepository.save(post);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> getPostsByAuthor(User author) {
+        return postRepository.findByAuthor(author);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Comment> getCommentsByAuthor(User author) {
+        return commentRepository.findByAuthor(author);
     }
 }

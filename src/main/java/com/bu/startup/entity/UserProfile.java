@@ -24,6 +24,7 @@ public class UserProfile extends BaseEntity {
     private String email;
     private int level;
     private int score;
+    private String profileImageUrl; // 프로필 이미지 URL 추가
    
     private boolean banned;
     private boolean isAdmin;

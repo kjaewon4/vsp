@@ -1,0 +1,17 @@
+<div th:fragment="sidebar_admin">
+    <div class="sidebar-profile">
+        <img th:src="@{${profile.profile?.profileImageUrl ?: '/images/default_profile.png'}}" alt="프로필" class="sidebar-avatar"/>
+        <div class="sidebar-balance">
+            <div>관리자 정보</div>
+            <div>잔액: <span th:text="${profile.balance != null ? #numbers.formatDecimal(profile.balance, 0, 'COMMA', 2, 'POINT') : '0.00'}"></span> KRW</div>
+        </div>
+    </div>
+    <nav class="sidebar-menu">
+        <a th:href="@{/dashboard/admin/info}" class="sidebar-menu-item">관리자 정보</a>
+        <a th:href="@{/dashboard/admin/serverManagement}" class="sidebar-menu-item">번들 서버 관리</a>
+        <a th:href="@{/dashboard/admin/pendingBundles}" class="sidebar-menu-item">번들 승인 대기</a>
+        <a th:href="@{/dashboard/admin/registerBundle}" class="sidebar-menu-item">번들 등록</a>
+        <a th:href="@{/dashboard/admin/allBundles}" class="sidebar-menu-item">모든 번들</a>
+        <a th:href="@{/dashboard/admin/userManagement}" class="sidebar-menu-item">유저 관리</a>
+    </nav>
+</div>

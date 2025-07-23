@@ -1,0 +1,371 @@
+/* dashboard.css */
+
+.dashboard-container {
+    display: flex;
+    min-height: calc(100vh - 72px); /* 헤더 높이만큼 빼기 */
+    background: #ffffff;
+}
+
+/* ── 사이드바 ── */
+.dashboard-sidebar {
+    width: 280px;
+    background: #e8e0ff;            /* 은은한 보라 톤 */
+    padding: 32px 24px;
+    border-top-right-radius: 24px;
+    border-bottom-right-radius: 24px;
+}
+
+.sidebar-profile {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.sidebar-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    object-fit: cover;
+    margin: 0 auto 12px;
+}
+.sidebar-balance {
+    font-size: 0.95rem;
+    color: #4f4d64;
+}
+
+/* 메뉴 */
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.sidebar-menu-item {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #262f50;
+    text-decoration: none;
+    padding: 12px 16px;
+    border-radius: 12px;
+    transition: background .2s, color .2s;
+}
+.sidebar-menu-item.active,
+.sidebar-menu-item:hover {
+    background: #d1c4fc;
+    color: #1a1a2e;
+}
+
+/* ── 메인 컨텐츠 ── */
+.dashboard-main {
+    flex: 1;
+    padding: 40px 60px;
+    overflow-y: auto;
+}
+
+/* 프로필 카드 */
+.profile-card {
+    max-width: 520px;
+    margin: 0 auto 32px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(38,48,80,0.05);
+    padding: 32px;
+    text-align: center;
+}
+.profile-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 16px;
+}
+.profile-card h2 {
+    font-size: 1.6rem;
+    margin-bottom: 24px;
+    color: #262f50;
+}
+.profile-info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.profile-info-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #4f4d64;
+}
+.profile-info-list .icon {
+    font-size: 1.3rem;
+    color: #8a72f6;
+}
+
+/* 폼 스타일 (선택) */
+/* 프로필 카드 전체 */
+.profile-card {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 8px 24px rgba(38,48,80,0.05);
+    text-align: center;
+}
+
+/* 아바타 */
+.profile-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 16px;
+    border: 3px solid #e8e0ff;
+}
+
+/* 닉네임 */
+.profile-name {
+    font-size: 1.6rem;
+    color: #262f50;
+    margin-bottom: 24px;
+}
+
+/* 정보 목록 컨테이너 */
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 개별 정보 행 */
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* 아이콘 */
+.info-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+/* 텍스트 */
+.info-text {
+    text-align: left;
+}
+.info-text .label {
+    font-size: 0.95rem;
+    color: #4f4d64;
+    margin-bottom: 4px;
+}
+.info-text .value {
+    font-size: 1.1rem;
+    color: #262f50;
+}
+
+/* 구분선 */
+.profile-info hr {
+    border: none;
+    border-top: 1px solid #e9ecef;
+    margin: 0;
+}
+
+
+/* 반응형 */
+@media (max-width: 1024px) {
+    .dashboard-container { flex-direction: column; }
+    .dashboard-sidebar { width: 100%; border-radius: 0 0 24px 24px; }
+    .dashboard-main { padding: 20px; }
+}
+
+/* Styles from items.css */
+.container {
+    max-width: 700px;
+    margin: auto;
+    padding-top: 30px;
+}
+
+.title-section h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.title-section p {
+    color: #666;
+    font-size: 14px;
+}
+
+.item-card {
+    background: white;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status.draft {
+    background: #e0e0e0;
+    color: #616161;
+}
+
+.status.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status.approved {
+    background: #e6f4ea;
+    color: #34a853;
+}
+
+.status.rejected {
+    background: #fce8e6;
+    color: #d93025;
+}
+
+.status.archived {
+    background: #e8eaf6;
+    color: #3949ab;
+}
+
+.status.deleted {
+    background: #eeeeee;
+    color: #9e9e9e;
+}
+
+.author {
+    color: #666;
+    font-size: 14px;
+    margin: 4px 0;
+}
+
+.category {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    margin: 6px 0;
+    font-weight: 500;
+}
+
+/* 카테고리별 색상 */
+.category.it_software {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.category.ecommerce {
+    background: #fce4ec;
+    color: #c2185b;
+}
+
+.category.education {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.category.healthcare {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.category.media_content {
+    background: #f3e5f5;
+    color: #6a1b9a;
+}
+
+.category.fintech {
+    background: #e0f7fa;
+    color: #00838f;
+}
+
+.category.social_impact {
+    background: #ede7f6;
+    color: #5e35b1;
+}
+
+.category.food {
+    background: #fffde7;
+    color: #f9a825;
+}
+
+.category.fashion_beauty {
+    background: #fce4ec;
+    color: #ad1457;
+}
+
+.category.lifestyle {
+    background: #e1f5fe;
+    color: #039be5;
+}
+
+.category.etc {
+    background: #eceff1;
+    color: #546e7a;
+}
+
+.desc {
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.item-footer {
+    font-size: 12px;
+    color: #888;
+}
+/* 추가된 부분 */
+.item-footer svg {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+.item-footer span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 70px;
+    text-align: center;
+}
+
+.author img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 8px;
+    object-fit: cover;
+}
+
+.author span {
+    vertical-align: middle;
+}

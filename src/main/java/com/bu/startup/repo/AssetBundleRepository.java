@@ -3,6 +3,7 @@ package com.bu.startup.repo;
 import java.util.List;
 import java.util.Optional;
 
+import com.bu.startup.entity.User;
 import com.bu.startup.type.CategoryType;
 import com.bu.startup.type.ItemStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,5 @@ public interface AssetBundleRepository extends JpaRepository<AssetBundleEntity, 
     List<AssetBundleEntity> findByCategoryAndStatusIn(CategoryType category, List<ItemStatus> statuses);
 
     List<AssetBundleEntity> findByStatusIn(List<ItemStatus> statuses);
+    List<AssetBundleEntity> findByAuthor(User author);
 }
