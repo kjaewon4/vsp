@@ -14,13 +14,14 @@
                         <a th:href="@{/api/assetbundles/bundleList}">창업아이템</a>
                     </li>
 
+                    <!-- 로그인한 모든 사용자에게 보이는 번들 등록 메뉴 -->
+                    <li sec:authorize="isAuthenticated()">
+                        <a th:href="@{/api/assetbundles/uploadForm}">번들 등록</a>
+                    </li>
+
                     <!-- 관리자에게만 보이는 메뉴 -->
                     <li sec:authorize="hasRole('ROLE_ADMIN')">
                         <a th:href="@{/api/assetbundles/admin/bundleList}">Bundle서버 관리</a>
-                    </li>
-
-                    <li sec:authorize="hasRole('ROLE_ADMIN')">
-                        <a th:href="@{/admin/uploadBundleDesc}">번들 등록</a>
                     </li>
                 </ul>
             </nav>

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.bu.startup.type.CategoryType;
+import com.bu.startup.type.ItemStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,6 +47,10 @@ public class AssetBundleEntity extends BaseEntity{
     private String detailDescription;  // 상세 설명
 
     private int views;                 // 조회수
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 50)
+    private ItemStatus status;         // 번들 상태 (승인 대기, 승인됨 등)
 
     @PrePersist
     public void prePersist() {

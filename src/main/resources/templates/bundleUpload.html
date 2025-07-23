@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{fragments/head :: commonHead}">
+    <title>번들 업로드</title>
+</head>
+<body>
+    <header th:replace="fragments/header :: commonHeader"></header>
+
+    <div class="container mt-5">
+        <h2>새 번들 업로드</h2>
+        <form th:action="@{/api/assetbundles/upload}" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="bundleName" class="form-label">번들 이름:</label>
+                <input type="text" class="form-control" id="bundleName" name="bundleName" required>
+            </div>
+            <div class="mb-3">
+                <label for="bundleTitle" class="form-label">번들 타이틀:</label>
+                <input type="text" class="form-control" id="bundleTitle" name="bundleTitle" required>
+            </div>
+            <div class="mb-3">
+                <label for="bundleDescription" class="form-label">번들 설명:</label>
+                <textarea class="form-control" id="bundleDescription" name="bundleDescription" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="detailDescription" class="form-label">상세 설명:</label>
+                <textarea class="form-control" id="detailDescription" name="detailDescription" rows="5" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="thumbnailFile" class="form-label">썸네일 이미지:</label>
+                <input type="file" class="form-control" id="thumbnailFile" name="thumbnailFile" accept="image/*" required>
+            </div>
+            <div class="mb-3">
+                <label for="winFile" class="form-label">Windows 번들 파일:</label>
+                <input type="file" class="form-control" id="winFile" name="winFile">
+            </div>
+            <div class="mb-3">
+                <label for="androidFile" class="form-label">Android 번들 파일:</label>
+                <input type="file" class="form-control" id="androidFile" name="androidFile">
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">카테고리:</label>
+                <select class="form-select" id="category" name="category" required>
+                    <option value="">카테고리 선택</option>
+                    <option th:each="cat : ${T(com.bu.startup.type.CategoryType).values()}" th:value="${cat}" th:text="${cat.displayName}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">번들 업로드</button>
+        </form>
+    </div>
+
+    <!-- 모달 창 (숨김처리) -->
+    <div id="resultModal" style="display:none; position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:9999;">
+        <div style="position:relative; margin:15vh auto; background:#fff; padding:2rem; border-radius:1rem; width:320px; text-align:center;">
+            <p id="modalMsg" style="font-size:1.2rem; margin-bottom:2rem;"></p>
+            <button id="modalBtn" class="btn btn-primary">확인</button>
+        </div>
+    </div>
+    <script src="/js/uploadForm.js"></script>
+</body>
+</html>

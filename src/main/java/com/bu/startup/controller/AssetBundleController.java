@@ -5,13 +5,10 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-//import org.hibernate.mapping.Collection;
 import com.bu.startup.entity.Post;
 import com.bu.startup.type.CategoryType;
 import com.bu.startup.type.ItemStatus;
@@ -20,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -88,87 +86,46 @@ public class AssetBundleController {
 	@Value("${upload.path}")
 	private String uploadPath;
 
-	/**
-	 * 단일 파일 + 설명 등록
-	 * @param file
-	 * @param bundleName
-	 * @param bundleTitle
-	 * @param bundleDescription
-	 * @return
-	 */
-	    @PostMapping("/bundleUpload")
-	    public ResponseEntity<String> uploadBundleDesc(@RequestParam("file") MultipartFile file,
-	                                               @RequestParam("bundleName") String bundleName,
-	                                               @RequestParam("bundleTitle") String bundleTitle,
-	                                               @RequestParam("bundleDescription") String bundleDescription) 
-	    {	    	
-	    	try {
-				AssetBundleEntity abe = assetBundleService.saveAssetBundle(file, bundleName, bundleTitle, bundleDescription);
-				sink.tryEmitNext("refresh");  // "refresh" 메시지를 클라이언트에 보냄
-					
-				return ResponseEntity.ok("Upload Description successful");
-	    	} catch (IOException e) {
-				// TODO Auto-generated catch block
-//				e.printStackTrace();
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Upload failed");
-				
+	@PostMapping("/upload")
+    public ResponseEntity<Map<String, Object>> uploadBundle(
+            @RequestParam("bundleName") String bundleName,
+            @RequestParam("bundleTitle") String bundleTitle,
+            @RequestParam("bundleDescription") String bundleDescription,
+            @RequestParam("thumbnailFile") MultipartFile thumbnailFile,
+            @RequestParam("winFile") MultipartFile winFile,
+            @RequestParam("androidFile") MultipartFile androidFile,
+            @RequestParam("category") CategoryType category,
+            @RequestParam("detailDescription") String detailDescription,
+            Authentication authentication) {
+		Map<String, Object> result = new HashMap<>();
+
+		try {
+            User currentUser = userService.getUserByUsername(authentication.getName());
+            if (currentUser == null) {
+				result.put("success", false);
+				result.put("message", "User not found");
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
 			}
-	    }
-	    
-	    @PostMapping("/bundleUploadPlatform")
-	    public ResponseEntity<String> uploadBundlePlatform(@RequestParam("win") MultipartFile winFile,
-	    													@RequestParam("and") MultipartFile andFile,
-	                                               @RequestParam("bundleName") String bundleName,
-	                                               @RequestParam("bundleTitle") String bundleTitle,
-	                                               @RequestParam("bundleDescription") String bundleDescription) 
-	    {	    	
-	    	try {
-				AssetBundleEntity abe = assetBundleService.saveAssetBundle(winFile, andFile, bundleName, bundleTitle, bundleDescription);
-				sink.tryEmitNext("refresh");  // "refresh" 메시지를 클라이언트에 보냄
-					
-				return ResponseEntity.ok("Upload Description successful");
-	    	} catch (IOException e) {
-				// TODO Auto-generated catch block
-//				e.printStackTrace();
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Upload failed");
-				
-			}
-	    }
-	    
-	    @PostMapping("/upload")
-	    public ResponseEntity<String> uploadBundle(@RequestParam("file") MultipartFile file,
-	                                               @RequestParam("bundleName") String bundleName) {
-	            
-	    	try {
-				AssetBundleEntity abe = assetBundleService.saveAssetBundle(file, bundleName);
-				sink.tryEmitNext("refresh");  // "refresh" 메시지를 클라이언트에 보냄
-				return ResponseEntity.ok("Upload successful");
-	    	} catch (IOException e) {
-				// TODO Auto-generated catch block
-//				e.printStackTrace();
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Upload failed");
-				
-			}
-	    	
-//	    	try {
-//	            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-//	            Path path = Paths.get(uploadPath + File.separator + fileName);
-//	            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-//
-//	            AssetBundleEntity bundle = AssetBundleEntity.builder()
-//	                    .bundleName(bundleName)
-//	                    .filePath(path.toString())
-//	                    .uploadedAt(LocalDateTime.now())
-//	                    .build();
-//
-//	            
-//	            assetBundleRepository.save(bundle);
-//
-//	            return ResponseEntity.ok("Upload successful");
-//	        } catch (IOException e) {
-//	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Upload failed");
-//	        }
-	    }
+
+			boolean isAdmin = authentication.getAuthorities().stream()
+							.anyMatch(g -> g.getAuthority().equals("ROLE_ADMIN"));
+
+            assetBundleService.saveAssetBundle(
+                    bundleName, bundleTitle, bundleDescription,
+                    thumbnailFile, winFile, androidFile,
+                    category, detailDescription, currentUser, isAdmin);
+            sink.tryEmitNext("refresh");
+
+			result.put("success", true);
+			result.put("isAdmin", isAdmin);
+			result.put("message", isAdmin ? "등록 성공" : "등록 요청 성공");
+			return ResponseEntity.ok(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+			result.put("success", false);
+			result.put("message", "Upload failed: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);        }
+    }
 
 //	    @GetMapping
 //	    public List<AssetBundleEntity> getAllBundles() {
@@ -363,6 +320,10 @@ public class AssetBundleController {
 										Authentication authentication) {
 		if(authentication == null) return new ModelAndView("login");
 
+		// TODO
+		// 관리자면 모든 상태 기준으로
+		// 일반 유저면 PENDING, ARCHIVED 만 포함한 기준으로
+
 		List<AssetBundleEntity> bundleList;
 		if (category != null) {
 			bundleList = assetBundleService.getBundlesByCategory(category);
@@ -510,5 +471,14 @@ public class AssetBundleController {
 		} catch (IOException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
+	}
+
+	@GetMapping("/uploadForm")
+	public ModelAndView showBundleUploadForm() {
+
+		ModelAndView mav = new ModelAndView("/bundleUpload");
+		mav.addObject("categories", CategoryType.values());
+
+        return mav;
 	}
 }
