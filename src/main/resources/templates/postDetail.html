@@ -14,26 +14,42 @@
         <a th:href="@{/api/assetbundles/{bundleId}(bundleId=${bundleId})}" class="breadcrumb-link" th:text="${bundleTitle}">번들타이틀</a>
         <span class="breadcrumb-sep">&gt;</span>
         <span class="breadcrumb-current" th:text="${post.title}">게시글 제목</span>
-<!--        <a th:href="@{/api/assetbundles/{bundleId}(bundleId=${bundleId})}" class="btn-detail">번들 상세로</a>-->
     </div>
 
-    <!-- 게시글 이름(제목) -->
-    <h1 class="post-title" th:text="${post.title}">게시글 제목</h1>
+    <!-- 포스트 헤더: 제목 + 수정/삭제 버튼 -->
+    <div class="">
+        <div class="post-header">
+            <h1 class="post-title" th:text="${post.title}">게시글 제목</h1>
+            <!-- 수정/삭제 텍스트 링크 -->
+            <div class="post-actions" th:if="${currentUser != null and (currentUser.userId == post.author.userId or currentUser.profile.isAdmin)}">
+                <a th:href="@{/posts/{postId}/edit(postId=${post.postId})}" class="action-link">수정</a>
+                <span class="action-sep">|</span>
+                <form th:action="@{/posts/{postId}/delete(postId=${post.postId})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');" class="action-form">
+                    <button type="submit" class="action-link">삭제</button>
+                </form>
+            </div>
+        </div>
 
-    <!-- 날짜/수정일/작성자: 좌우 정렬 -->
-    <div class="post-meta-row">
-        <div class="post-meta-left">
-            <span class="meta-label">작성일:</span>
-            <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">2025-07-23 14:20</span>
-            <span th:if="${post.updatedAt != null and post.updatedAt != post.createdAt}" class="meta-sep">|</span>
-            <span th:if="${post.updatedAt != null and post.updatedAt != post.createdAt}">
-                    <span class="meta-label">수정일:</span>
-                    <span th:text="${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}"></span>
-                </span>
-        </div>
-        <div class="post-meta-right">
-            <span>by <strong th:text="${post.author.username}">작성자</strong></span>
-        </div>
+
+    <!-- 메타 정보: 작성일 · 수정일 · 작성자 -->
+    <div class="post-meta">
+        <span class="meta-item">
+            <span><img th:src="${#authorization.expression('hasRole(''ROLE_ADMIN'')')
+                   ? '/img/admin_profile.png'
+                   : '/img/man_profile.png'}" alt="프로필" class="profile-avatar"/></span>
+            <span th:text="${post.author.username}">작성자</span>
+        </span>
+        <span class="meta-sep"> </span>
+        <span class="meta-item">
+            <time th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">2025-07-23</time>
+            <span>작성</span>
+        </span>
+        <span class="meta-sep"> </span>
+        <span class="meta-item" th:if="${post.updatedAt != null and post.updatedAt != post.createdAt}">
+            <time th:text="${#temporals.format(post.updatedAt, 'yyyy-MM-dd')}">2025-07-24</time>
+            <span>수정</span>
+        </span>
+
     </div>
 
     <!-- 게시글 내용 -->
@@ -41,12 +57,12 @@
         게시글 내용이 들어갑니다.
     </div>
 
-    <div th:if="${currentUser != null and (currentUser.userId == post.author.userId or currentUser.profile.isAdmin)}" class="post-actions">
-        <a th:href="@{/posts/{postId}/edit(postId=${post.postId})}" class="btn-edit">수정</a>
-        <form th:action="@{/posts/{postId}/delete(postId=${post.postId})}" method="post" onsubmit="return confirm('정말로 이 게시글을 삭제하시겠습니까?');" style="display:inline;">
-            <button type="submit" class="btn-delete">삭제</button>
-        </form>
-    </div>
+<!--    <div th:if="${currentUser != null and (currentUser.userId == post.author.userId or currentUser.profile.isAdmin)}" class="post-actions">-->
+<!--        <a th:href="@{/posts/{postId}/edit(postId=${post.postId})}" class="btn-edit">수정</a>-->
+<!--        <form th:action="@{/posts/{postId}/delete(postId=${post.postId})}" method="post" onsubmit="return confirm('정말로 이 게시글을 삭제하시겠습니까?');" style="display:inline;">-->
+<!--            <button type="submit" class="btn-delete">삭제</button>-->
+<!--        </form>-->
+<!--    </div>-->
 
     <!-- 댓글 작성 -->
     <section class="comment-section">

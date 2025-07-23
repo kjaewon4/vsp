@@ -5,6 +5,17 @@
     /*padding: 36px 28px 48px 28px;*/
 }
 
+.profile-avatar{
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #ececec;
+    background: #fff;
+    align-items: center;
+    justify-content: center;
+}
 .breadcrumb-wrap {
     display: flex;
     align-items: center;
@@ -60,6 +71,11 @@
     align-items: center;
     gap: 7px;
 }
+.meta-item {
+    font-size: 14px;
+    color: #7b7b7b;
+}
+
 .meta-label { font-weight: 500; color: #555; }
 .meta-sep { margin: 0 4px; color: #bbb; }
 
@@ -131,16 +147,44 @@
 .comment-actions {
     text-align: right;
 }
-.btn-comment-delete {
-    background: none;
-    color: #d22;
-    border: none;
-    font-size: 13px;
-    cursor: pointer;
-    margin-top: 2px;
-}
-.btn-comment-delete:hover { text-decoration: underline; }
+
 .no-comments { color: #bbb; padding: 8px 0 0 2px; font-size: 14px; }
+
+/* --- 수정 | 삭제 링크 --- */
+.post-header{
+    display: flex;
+    justify-content: space-between;
+}
+.post-actions {
+    margin-top: 20px;
+    text-align: right;
+    font-size: 0.9rem;
+}
+
+.action-link {
+    color: #3578e5;
+    text-decoration: none;
+    padding: 2px 6px;
+    cursor: pointer;
+    transition: color 0.2s;
+    font-weight: 500;
+    background: none;
+    border: none;
+}
+
+.action-link:hover {
+    color: #274b88;
+}
+
+.action-sep {
+    margin: 0 6px;
+    color: #999;
+}
+
+/* form 태그도 인라인으로 처리 */
+.action-form {
+    display: inline;
+}
 
 @media (max-width: 600px) {
     .detail-container { padding: 13px 3vw 28px 3vw; }
