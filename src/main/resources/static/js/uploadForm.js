@@ -29,6 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
     modalBtn.addEventListener('click', function() {
         modal.style.display = "none";
         form.reset();
-        window.location.href = "/api/assetbundles/uploadForm";
+        window.location.href = "/api/assetbundles/bundleList";
     });
 });

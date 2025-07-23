@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: commonHead}">
+    <title>번들 승인 관리</title>
+</head>
+<link rel="stylesheet" th:href="@{/css/admin.css}" />
+<body>
+<div th:replace="~{fragments/header :: commonHeader}"></div>
+
+<div class="main-content">
+    <div class="container">
+        <div class="title-section">
+            <h2>번들 승인 관리</h2>
+            <p>승인 대기 중인 번들 목록입니다.</p>
+        </div>
+
+        <div class="item-card">
+            <h3>승인 대기 번들 목록</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>번들 이름</th>
+                        <th>번들 타이틀</th>
+                        <th>번들 설명</th>
+                        <th>작성자</th>
+                        <th>카테고리</th>
+                        <th>상세 설명</th>
+                        <th>업로드 시간</th>
+                        <th>상태</th>
+                        <th>액션</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="bundle : ${pendingBundles}">
+                        <td th:text="${bundle.id}"></td>
+                        <td th:text="${bundle.bundleName}"></td>
+                        <td th:text="${bundle.bundleTitle}"></td>
+                        <td th:text="${bundle.bundleDescription}"></td>
+                        <td th:text="${bundle.author.username}"></td>
+                        <td th:text="${bundle.category.displayName}"></td>
+                        <td th:text="${bundle.detailDescription}"></td>
+                        <td th:text="${#temporals.format(bundle.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${bundle.status.displayName}"></td>
+                        <td>
+                            <form th:action="@{/admin/approveBundle/{id}(id=${bundle.id})}" method="post" style="display:inline;">
+                                <button type="submit" class="button-primary">승인</button>
+                            </form>
+                            <form th:action="@{/admin/rejectBundle/{id}(id=${bundle.id})}" method="post" style="display:inline;">
+                                <button type="submit" class="button-danger">거절</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div th:if="${#lists.isEmpty(pendingBundles)}">
+                <p>승인 대기 중인 번들이 없습니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

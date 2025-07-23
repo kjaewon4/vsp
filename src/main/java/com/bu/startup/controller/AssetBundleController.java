@@ -316,27 +316,51 @@ public class AssetBundleController {
 	 * @return
 	 */
 	@GetMapping("/bundleList")
-	public ModelAndView listBundlesOnly(@RequestParam(required = false) CategoryType category,
-										Authentication authentication) {
+	public ModelAndView listBundlesOnly(
+			@RequestParam(required = false) CategoryType category,
+			@RequestParam(required = false) ItemStatus status,
+			Authentication authentication) {
 		if(authentication == null) return new ModelAndView("login");
 
-		// TODO
-		// 관리자면 모든 상태 기준으로
-		// 일반 유저면 PENDING, ARCHIVED 만 포함한 기준으로
+		boolean isAdmin = authentication.getAuthorities().stream()
+				.anyMatch(g -> g.getAuthority().equals("ROLE_ADMIN"));
+
+		List<ItemStatus> targetStatuses;
+		if (isAdmin) {
+			targetStatuses = Arrays.asList(ItemStatus.values());
+		} else {
+			targetStatuses = Arrays.asList(ItemStatus.PENDING, ItemStatus.ARCHIVED);
+		}
 
 		List<AssetBundleEntity> bundleList;
-		if (category != null) {
-			bundleList = assetBundleService.getBundlesByCategory(category);
+
+		// 1. status 파라미터가 있으면, 해당 status가 targetStatuses에 포함된 경우만 조회
+		List<ItemStatus> filteredStatuses;
+		if (status != null) {
+			// 만약 전달된 status가 targetStatuses에 없으면 빈 리스트(=조회결과 없음)
+			if (targetStatuses.contains(status)) {
+				filteredStatuses = Arrays.asList(status);
+			} else {
+				filteredStatuses = Collections.emptyList();
+			}
 		} else {
-			bundleList = assetBundleService.getAllBundles();
+			filteredStatuses = targetStatuses;
+		}
+
+		// 2. category+status, category만, status만, 둘 다 없을 때 모두 일관성 있게 처리
+		if (category != null) {
+			bundleList = assetBundleService.getBundlesByCategoryAndStatuses(category, filteredStatuses);
+		} else {
+			bundleList = assetBundleService.getBundlesByStatuses(filteredStatuses);
 		}
 
 		ModelAndView mav = new ModelAndView("/bundleList");
 		mav.addObject("bundleList", bundleList);
 		mav.addObject("categories", CategoryType.values());
-		mav.addObject("statuses", ItemStatus.values());
+		mav.addObject("statuses", targetStatuses);
 		return mav;
 	}
+
 	    
 	@GetMapping("/{id}")
 	public ModelAndView getBundleDetail(@PathVariable Long id, Authentication authentication) {

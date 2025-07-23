@@ -23,6 +23,10 @@
                     <li sec:authorize="hasRole('ROLE_ADMIN')">
                         <a th:href="@{/api/assetbundles/admin/bundleList}">Bundle서버 관리</a>
                     </li>
+
+                    <li sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a th:href="@{/admin/pendingBundles}">번들 승인 대기</a>
+                    </li>
                 </ul>
             </nav>
         </div>

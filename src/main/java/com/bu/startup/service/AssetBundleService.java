@@ -7,12 +7,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import com.bu.startup.entity.User;
 import com.bu.startup.type.CategoryType;
 import com.bu.startup.type.ItemStatus;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -138,6 +140,34 @@ public class AssetBundleService {
      */
     public List<AssetBundleEntity> getBundlesByCategory(CategoryType category) {
         return assetBundleRepository.findByCategory(category);
+    }
+
+    public List<AssetBundleEntity> getBundlesByStatus(ItemStatus status) {
+        return assetBundleRepository.findByStatus(status);
+    }
+
+    public List<AssetBundleEntity> getPendingBundles() {
+        return assetBundleRepository.findByStatus(ItemStatus.PENDING);
+    }
+
+    @Transactional
+    public AssetBundleEntity updateBundleStatus(Long bundleId, ItemStatus newStatus) {
+        AssetBundleEntity bundle = assetBundleRepository.findById(bundleId)
+                .orElseThrow(() -> new IllegalArgumentException("AssetBundle not found"));
+        bundle.setStatus(newStatus);
+        return assetBundleRepository.save(bundle);
+    }
+
+    // 여러 상태로 조회
+    public List<AssetBundleEntity> getBundlesByCategoryAndStatuses(CategoryType category, List<ItemStatus> statuses) {
+        if (statuses.isEmpty()) return Collections.emptyList();
+        return assetBundleRepository.findByCategoryAndStatusIn(category, statuses);
+    }
+
+    // status 컬럼의 값이 주어진 리스트에 포함된 값 중 하나인 데이터만 조회
+    public List<AssetBundleEntity> getBundlesByStatuses(List<ItemStatus> statuses) {
+        if (statuses.isEmpty()) return Collections.emptyList();
+        return assetBundleRepository.findByStatusIn(statuses);
     }
 
 }

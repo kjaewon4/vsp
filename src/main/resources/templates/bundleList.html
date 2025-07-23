@@ -22,13 +22,13 @@
                     th:selected="${c.name() == param.category}">카테고리</option>
         </select>
 
-<!--        <select class="filter-select" name="status">-->
-<!--            <option value="">All Status</option>-->
-<!--            <option th:each="s : ${statuses}"-->
-<!--                    th:value="${s.name()}"-->
-<!--                    th:text="${s.displayName}"-->
-<!--                    th:selected="${s.name() == param.status}">상태</option>-->
-<!--        </select>-->
+        <select class="filter-select" name="status">
+            <option value="">All Status</option>
+            <option th:each="s : ${statuses}"
+                    th:value="${s.name()}"
+                    th:text="${s.displayName}"
+                    th:selected="${s.name() == param.status}">상태</option>
+        </select>
 
         <button type="submit" class="filter-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
@@ -45,6 +45,7 @@
         <a th:href="@{/api/assetbundles/{id}(id=${bundle.id})}" style="text-decoration: none; color: inherit; display: block; height: 100%;">
             <div class="item-header">
                 <h3 th:text="${bundle.bundleTitle}">번들 제목</h3>
+                <span class="status" th:classappend="${bundle.status.name().toLowerCase()}" th:text="${bundle.status.displayName}">상태</span>
             </div>
             <p class="author">by <span th:text="${bundle.author?.profile?.nickname != null ? bundle.author.profile.nickname : '-'}">사용자 닉네임</span></p>
             <span class="category" th:classappend="${bundle.category != null ? bundle.category.name().toLowerCase() : '-'}" th:text="${bundle.category != null ? bundle.category.displayName : '-'}">카테고리</span>
@@ -66,6 +67,12 @@
             </div>
         </a>
     </div>
+
+    <div th:if="${#lists.isEmpty(bundleList)}" style="font-size: 14px; color: #666; text-align: center; margin-top: 20px;">
+        검색 조건에 해당하는 번들이 존재하지 않습니다.
+    </div>
+
+</div>
 
 </div>
 </body>
