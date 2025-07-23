@@ -1,5 +1,7 @@
 <div th:fragment="user_funded_bundles_fragment">
-    <h2>내가 펀딩한 번들</h2>
+    <div class="title-section">
+        <h2>내가 펀딩한 번들</h2>
+    </div>
     <div th:if="${#lists.isEmpty(fundedBundles)}">
         <p>펀딩한 번들이 없습니다.</p>
     </div>

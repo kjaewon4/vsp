@@ -1,7 +1,7 @@
 /* dashboard.css */
 
 .dashboard-container {
-    display: flex;
+    /* display: flex; */ /* Removed as sidebar will be fixed */
     min-height: calc(100vh - 72px); /* 헤더 높이만큼 빼기 */
     background: #ffffff;
 }
@@ -13,6 +13,11 @@
     padding: 32px 24px;
     border-top-right-radius: 24px;
     border-bottom-right-radius: 24px;
+    position: fixed; /* Make sidebar fixed */
+    top: 72px; /* Adjust for header height */
+    left: 0; /* Align to the left */
+    height: calc(100vh - 72px); /* Fill remaining vertical space */
+    overflow-y: auto; /* Add scroll if content overflows */
 }
 
 .sidebar-profile {
@@ -36,7 +41,6 @@
 .sidebar-menu {
     display: flex;
     flex-direction: column;
-    gap: 16px;
 }
 .sidebar-menu-item {
     display: block;
@@ -59,6 +63,7 @@
     flex: 1;
     padding: 40px 60px;
     overflow-y: auto;
+    margin-left: 280px; /* Add margin to account for fixed sidebar */
 }
 
 /* 프로필 카드 */
@@ -134,7 +139,6 @@
 .profile-info {
     display: flex;
     flex-direction: column;
-    gap: 16px;
 }
 
 /* 개별 정보 행 */
@@ -184,7 +188,7 @@
 .container {
     max-width: 700px;
     margin: auto;
-    padding-top: 30px;
+    /*padding-top: 30px;*/
 }
 
 .title-section h2 {

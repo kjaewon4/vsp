@@ -1,5 +1,7 @@
 <div th:fragment="user_my_posts_fragment">
-    <h2>내가 작성한 게시글</h2>
+    <div class="title-section">
+        <h2>내가 작성한 게시글</h2>
+    </div>
     <div th:if="${#lists.isEmpty(myPosts)}">
         <p>작성한 게시글이 없습니다.</p>
     </div>
