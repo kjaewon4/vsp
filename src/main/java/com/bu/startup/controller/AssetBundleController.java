@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 //import org.hibernate.mapping.Collection;
+import com.bu.startup.entity.Post;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -352,7 +353,7 @@ public class AssetBundleController {
 	    public ModelAndView listBundlesOnly(Authentication authentication) {
 	        if(authentication == null) return new ModelAndView("login");
 	        
-	        ModelAndView mav = new ModelAndView("/bundleListOnly");
+	        ModelAndView mav = new ModelAndView("/admin/bundleListOnly");
 	        mav.addObject("assetBundles", assetBundleService.getAllBundles());
 	        return mav;
 	    }
@@ -371,8 +372,9 @@ public class AssetBundleController {
 	            }
 	        }
 	        mav.addObject("likeCount", likeService.getLikeCount(id));
-	        postService.getPostByAssetBundleId(id).ifPresent(post -> mav.addObject("post", post));
-	        return mav;
+			List<Post> postList = postService.getPostsByAssetBundleId(id);
+			mav.addObject("postList", postList);
+			return mav;
 	    }
 
 	    @PostMapping("/{id}/like")

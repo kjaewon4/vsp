@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -19,9 +22,12 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "asset_bundle_id", unique = true) // One-to-one with AssetBundleEntity
+    @ManyToOne(fetch = FetchType.LAZY) // One-to-many with AssetBundleEntity
+    @JoinColumn(name = "asset_bundle_id", nullable = false)
     private AssetBundleEntity assetBundle;
+
+    @Column(nullable = false, length = 200)
+    private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -29,4 +35,8 @@ public class Post extends BaseEntity {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
 }

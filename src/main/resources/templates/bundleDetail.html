@@ -1,110 +1,135 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:replace="fragments/head :: head"></head>
+<head th:replace="~{fragments/head :: commonHead}">
+    <meta charset="UTF-8">
+    <title th:text="${bundle.bundleTitle} + ' 상세'">AssetBundle 상세</title>
+</head>
+<link rel="stylesheet" th:href="@{/css/bundleDetail.css}">
 <body>
-    <header th:replace="fragments/header :: header"></header>
+<header th:replace="fragments/header :: header"></header>
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h2 th:text="${bundle.bundleTitle}">번들 제목</h2>
-                    </div>
-                    <div class="card-body">
-                        <p th:text="${bundle.bundleDescription}">번들 설명</p>
-                        <p>업로드 날짜: <span th:text="${#temporals.format(bundle.uploadedAt, 'yyyy-MM-dd HH:mm')}"></span></p>
-                        <p>번들 이름: <span th:text="${bundle.bundleName}"></span></p>
-                        <p>좋아요 수: <span id="likeCount" th:text="${likeCount}"></span></p>
+<main class="detail-container" th:attr="data-bundle-id=${bundle.id}">
+    <section class="bundle-card">
+        <div class="bundle-card__image">
+            <img th:src="@{/img/default_bundle.jpg}" alt="번들 이미지">
 
-                        <button id="likeButton" class="btn" th:classappend="${isLiked} ? 'btn-danger' : 'btn-outline-danger'">
-                            <span th:text="${isLiked} ? '좋아요 취소' : '좋아요'"></span>
-                        </button>
-                    </div>
+        </div>
+
+        <div class="bundle-card__info">
+<!--            <div class="bundle-card__badges">-->
+<!--                <span class="badge badge-hot" th:if="${bundle.isHot}">HOT</span>-->
+<!--                <span class="badge badge-green" th:if="${bundle.isReservable}">예약가능</span>-->
+<!--            </div>-->
+            <h2 class="bundle-card__title" th:text="${bundle.bundleTitle}">번들 제목</h2>
+            <div class="bundle-card__desc" th:text="${bundle.bundleDescription}">설명</div>
+            <ul class="bundle-card__meta">
+                <li>
+                    <span class="icon">📦</span>
+                    <span th:text="'번들 이름: ' + ${bundle.bundleName}"></span>
+                </li>
+                <li>
+                    <svg class="icon-calendar" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span th:text="'업로드: ' + ${#temporals.format(bundle.uploadedAt, 'yyyy-MM-dd HH:mm')}"></span>
+                </li>
+                <li>
+                    <button id="likeButton" class="btn-like-heart" th:classappend="${isLiked} ? 'liked' : ''" type="button">
+                        <svg class="icon-heart" width="22" height="22" viewBox="0 0 30 30" fill="none">
+                            <path th:attr="fill=${isLiked} ? '#3971FF' : 'none'" stroke="#3971FF" stroke-width="2" d="M15 27s-8-6-11-10C-1 11 3 4 10 5c3 0 5 3 5 3s2-3 5-3c7-1 11 6 6 12-3 4-11 10-11 10z"/>
+                        </svg>
+                    </button>
+                    <span id="likeCount" th:text="${likeCount}"></span>
+                </li>
+            </ul>
+            <div class="bundle-card__price">
+<!--                 th:if="${bundle.priceMin != null}"-->
+
+<!--                <span th:text="${#numbers.formatInteger(bundle.priceMin, 0)} + '원 ~ ' + ${#numbers.formatInteger(bundle.priceMax, 0)} + '원'"></span>-->
+                    <span>-원</span>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 하단 정보 탭 -->
+    <section class="tab-section">
+        <nav class="tab-nav">
+            <button class="tab-btn active" type="button">상세정보</button>
+            <button class="tab-btn" type="button">게시글</button>
+        </nav>
+        <div class="tab-content">
+            <div class="tab-panel active">
+
+                <dl class="info-list">
+<!--                    <dt>작성자</dt>-->
+<!--                    <dd th:text="${post.author.username}">작성자명</dd>-->
+<!--                    <dt>상태</dt>-->
+<!--                    <dd th:text="${bundle.status}">상태</dd>-->
+                    <dt>업로드 날짜</dt>
+                    <dd th:text="${#temporals.format(bundle.uploadedAt, 'yyyy-MM-dd HH:mm')}">2025-08-01 14:00</dd>
+                </dl>
+            </div>
+            <div class="tab-panel">
+                <div class="post-list-header">
+                    <span class="post-list-title">게시글</span>
+                    <button type="button" class="btn-add-post" data-bs-toggle="modal" data-bs-target="#postModal">+ 글쓰기</button>
                 </div>
-
-                <!-- 게시글 섹션 -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h3>게시글</h3>
-                    </div>
-                    <div class="card-body">
-                        <div th:if="${post}">
-                            <p>작성자: <span th:text="${post.author.username}"></span></p>
-                            <p th:text="${post.content}"></p>
-                            <a th:href="@{/posts/{postId}(postId=${post.postId})}" class="btn btn-info">게시글 보기</a>
-                        </div>
-                        <div th:unless="${post}">
-                            <p>아직 게시글이 없습니다. 첫 게시글을 작성해주세요!</p>
-                            <form id="postForm" method="post" action="/posts">
-                                <input type="hidden" name="assetBundleId" th:value="${bundle.id}">
-                                <div class="form-group">
-                                    <label for="postContent">게시글 내용:</label>
-                                    <textarea class="form-control" id="postContent" name="content" rows="5" required></textarea>
+                <div class="post-list">
+                    <div th:each="post : ${postList}">
+                        <a th:href="@{/posts/{postId}(postId=${post.postId})}" class="post-row">
+                            <div class="post-header">
+                                <div class="post-title" th:text="${post.title}"></div>
+                                <div class="post-date">
+                                    <span th:text="'작성일: ' + ${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                                    <span th:if="${post.updatedAt != null and post.updatedAt != post.createdAt}" th:text="'(수정일: ' + ${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}' )'"></span>
                                 </div>
-                                <button type="submit" class="btn btn-primary mt-3">게시글 작성</button>
-                            </form>
+                            </div>
+                            <div class="post-meta">
+                                <span th:text="${post.author.username}"></span>
+                            </div>
+                            <div class="post-preview" th:text="${#strings.abbreviate(post.content, 60)}"></div>
+                        </a>
+                        <hr class="post-divider">
+                    </div>
+                    <div th:if="${#lists.isEmpty(postList)}">
+                        <p>아직 게시글이 없습니다.</p>
+                    </div>
+                </div>
+
+                <!-- Post Creation Modal -->
+                <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="postModalLabel">새 게시글 작성</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="postForm">
+                                    <input type="hidden" name="assetBundleId" th:value="${bundle.id}">
+                                    <div class="mb-3">
+                                        <label for="postTitle" class="form-label">제목</label>
+                                        <input type="text" class="form-control" id="postTitle" name="title" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="postContent" class="form-label">내용</label>
+                                        <textarea class="form-control" id="postContent" name="content" rows="5" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">작성</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
-    </div>
+    </section>
+</main>
 
-    <script th:inline="javascript">
-        const bundleId = [[${bundle.id}]];
-        const likeButton = document.getElementById('likeButton');
-        const likeCountSpan = document.getElementById('likeCount');
-        const postForm = document.getElementById('postForm');
+    <script src="/js/bundleDetail.js"></script>
 
-        likeButton.addEventListener('click', async () => {
-            const response = await fetch(`/api/assetbundles/${bundleId}/like`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-            if (response.ok) {
-                const isLiked = likeButton.classList.toggle('btn-danger');
-                likeButton.classList.toggle('btn-outline-danger');
-                let currentLikes = parseInt(likeCountSpan.textContent);
-                if (isLiked) {
-                    likeCountSpan.textContent = currentLikes + 1;
-                    likeButton.querySelector('span').textContent = '좋아요 취소';
-                } else {
-                    likeCountSpan.textContent = currentLikes - 1;
-                    likeButton.querySelector('span').textContent = '좋아요';
-                }
-            } else if (response.status === 401) {
-                alert('로그인이 필요합니다.');
-                window.location.href = '/login';
-            } else {
-                alert('좋아요 처리 중 오류가 발생했습니다.');
-            }
-        });
-
-        if (postForm) {
-            postForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-                const formData = new FormData(postForm);
-                const response = await fetch('/posts', {
-                    method: 'POST',
-                    body: new URLSearchParams(formData).toString(),
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    }
-                });
-                if (response.ok) {
-                    alert('게시글이 작성되었습니다.');
-                    window.location.reload();
-                } else if (response.status === 401) {
-                    alert('로그인이 필요합니다.');
-                    window.location.href = '/login';
-                } else {
-                    alert('게시글 작성 중 오류가 발생했습니다.');
-                }
-            });
-        }
-    </script>
 </body>
 </html>

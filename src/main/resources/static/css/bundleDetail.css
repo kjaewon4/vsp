@@ -1,0 +1,256 @@
+body {
+    background: #fafbff;
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+    margin: 0;
+}
+
+.detail-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 16px;
+}
+
+.bundle-card {
+    display: flex;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 36px;
+}
+
+.bundle-card__image {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    margin: 20px;
+}
+.bundle-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+    background: #e8eaf6;
+}
+
+.btn-like-heart {
+    z-index: 3;
+    background: rgb(255, 255, 255);
+    border: none;
+    border-radius: 50%;
+    padding: 4px;
+    cursor: pointer;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.14s;
+}
+.btn-like-heart .icon-heart {
+    width: 22px; height: 22px;
+}
+
+
+.btn-like-heart.liked .icon-heart path {
+    fill: #3971FF;
+    stroke: #3971FF;
+}
+.btn-like-heart .icon-heart path {
+    fill: none;
+    stroke: #3971FF;
+    transition: fill 0.18s;
+}
+.btn-like-heart:hover {
+    background: #e7f0ff;
+}
+
+.bundle-card__info {
+    flex: 1;
+    padding: 28px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.bundle-card__title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #252849;
+    margin: 0 0 7px 0;
+}
+.bundle-card__desc {
+    color: #666;
+    margin-bottom: 18px;
+}
+
+.bundle-card__meta {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px 0;
+}
+.bundle-card__meta li {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: #61677c;
+    margin-bottom: 3px;
+}
+.bundle-card__meta .icon,
+.icon {
+    margin-right: 7px;
+}
+.icon-calendar {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    min-height: 22px;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+.bundle-card__price {
+    font-size: 1.3rem;
+    color: #304ffe;
+    font-weight: 700;
+    margin-bottom: 17px;
+}
+
+.tab-section {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    padding: 26px 30px;
+}
+
+.tab-nav {
+    display: flex;
+    gap: 13px;
+    margin-bottom: 18px;
+}
+.tab-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #878ca2;
+    padding: 6px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: color 0.2s, background 0.2s;
+}
+.tab-btn.active {
+    background: #e6edff;
+    color: #304ffe;
+}
+
+.tab-content {
+    margin-top: 10px;
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.info-list {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 7px 24px;
+    font-size: 15px;
+}
+.info-list dt {
+    color: #8e95a5;
+    font-weight: 500;
+}
+.info-list dd {
+    margin: 0 0 7px 0;
+    color: #252849;
+    font-weight: 600;
+}
+
+.post-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+.post-list-title {
+    font-size: 1.13rem;
+    font-weight: 700;
+}
+.btn-add-post {
+    background: #304ffe;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 7px 19px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.btn-add-post:hover {
+    background: #2635b6;
+}
+
+.post-list {
+    margin-top: 16px;
+}
+.post-row {
+    display: block;
+    padding: 18px 8px 14px 8px;
+    border-radius: 10px;
+    background: #f7f9ff;
+    color: #252849;
+    text-decoration: none;
+    transition: background 0.13s;
+}
+.post-row:hover {
+    background: #e6edff;
+}
+.post-title {
+    font-size: 1.13rem;
+    font-weight: 700;
+}
+.post-meta {
+    font-size: 13px;
+    color: #888;
+    margin: 5px 0 3px 0;
+}
+.post-preview {
+    color: #666;
+    margin-top: 2px;
+}
+.post-divider {
+    border: none;
+    border-bottom: 1.5px solid #e0e7ff;
+    margin: 0;
+}
+
+/* 배지 스타일 (hot, green 등) */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 13px;
+    border-radius: 7px;
+    margin-right: 6px;
+    font-weight: 600;
+}
+.badge-hot {
+    background: #f45e61;
+    color: #fff;
+}
+.badge-green {
+    background: #47d883;
+    color: #fff;
+}
+
+@media (max-width: 900px) {
+    .bundle-card {
+        flex-direction: column;
+        align-items: center;
+    }
+    .bundle-card__image img {
+        margin: 28px auto 0 auto;
+    }
+    .bundle-card__info {
+        padding: 18px 20px;
+    }
+}
