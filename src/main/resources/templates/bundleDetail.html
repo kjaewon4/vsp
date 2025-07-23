@@ -5,8 +5,8 @@
     <title th:text="${bundle.bundleTitle} + ' 상세'">AssetBundle 상세</title>
 </head>
 <link rel="stylesheet" th:href="@{/css/bundleDetail.css}">
-<body>
-<header th:replace="fragments/header :: header"></header>
+<body style="padding-top: 72px;">
+<div th:replace="fragments/header :: commonHeader"></div>
 
 <main class="detail-container" th:attr="data-bundle-id=${bundle.id}">
     <section class="bundle-card">
@@ -16,38 +16,42 @@
         </div>
 
         <div class="bundle-card__info">
-<!--            <div class="bundle-card__badges">-->
-<!--                <span class="badge badge-hot" th:if="${bundle.isHot}">HOT</span>-->
-<!--                <span class="badge badge-green" th:if="${bundle.isReservable}">예약가능</span>-->
-<!--            </div>-->
+            <div class="bundle-card__badges">
+                <span class="badge category" th:classappend="${bundle.category != null ? bundle.category.name().toLowerCase() : ''}" th:text="${bundle.category != null ? bundle.category.displayName : 'N/A'}">HOT</span>
+                <span class="badge status" th:classappend="${bundle.status.name().toLowerCase()}" th:text="${bundle.status.displayName}"></span>
+            </div>
             <h2 class="bundle-card__title" th:text="${bundle.bundleTitle}">번들 제목</h2>
             <div class="bundle-card__desc" th:text="${bundle.bundleDescription}">설명</div>
             <ul class="bundle-card__meta">
                 <li>
-                    <span class="icon">📦</span>
-                    <span th:text="'번들 이름: ' + ${bundle.bundleName}"></span>
+                    <span>
+                        번들 이름
+                    </span>
+                    <span th:text="${bundle.bundleName}"></span>
                 </li>
                 <li>
-                    <svg class="icon-calendar" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                    <span th:text="'업로드: ' + ${#temporals.format(bundle.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                    <span>
+                        업로드 날짜
+                    </span>
+                    <span th:text="${#temporals.format(bundle.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
                 </li>
                 <li>
-                    <button id="likeButton" class="btn-like-heart" th:classappend="${isLiked} ? 'liked' : ''" type="button">
-                        <svg class="icon-heart" width="22" height="22" viewBox="0 0 30 30" fill="none">
-                            <path th:attr="fill=${isLiked} ? '#3971FF' : 'none'" stroke="#3971FF" stroke-width="2" d="M15 27s-8-6-11-10C-1 11 3 4 10 5c3 0 5 3 5 3s2-3 5-3c7-1 11 6 6 12-3 4-11 10-11 10z"/>
-                        </svg>
-                    </button>
+                    <span>
+                        <button id="likeButton" class="btn-like-heart" th:classappend="${isLiked} ? 'liked' : ''" type="button">
+                            <svg class="icon-heart" width="22" height="22" viewBox="0 0 30 30" fill="none">
+                                <path th:attr="fill=${isLiked} ? '#3971FF' : 'none'" stroke="#3971FF" stroke-width="2" d="M15 27s-8-6-11-10C-1 11 3 4 10 5c3 0 5 3 5 3s2-3 5-3c7-1 11 6 6 12-3 4-11 10-11 10z"/>
+                            </svg>
+                        </button>
+                    </span>
                     <span id="likeCount" th:text="${likeCount}"></span>
                 </li>
             </ul>
-            <div class="bundle-card__price">
-<!--                 th:if="${bundle.priceMin != null}"-->
-
-<!--                <span th:text="${#numbers.formatInteger(bundle.priceMin, 0)} + '원 ~ ' + ${#numbers.formatInteger(bundle.priceMax, 0)} + '원'"></span>-->
-                    <span>-원</span>
+            <div class="bundle-card__funding">
+                <div class="form-group">
+                    <label for="fundingAmount">금액 입력:</label>
+                    <input type="number" id="fundingAmount" name="fundingAmount" class="form-control" placeholder="펀딩 금액을 입력하세요" min="1000" required>
+                </div>
+                <button type="button" class="btn-primary">펀딩하기</button>
             </div>
 
         </div>
@@ -61,14 +65,25 @@
         </nav>
         <div class="tab-content">
             <div class="tab-panel active">
-
                 <dl class="info-list">
-<!--                    <dt>작성자</dt>-->
-<!--                    <dd th:text="${post.author.username}">작성자명</dd>-->
-<!--                    <dt>상태</dt>-->
-<!--                    <dd th:text="${bundle.status}">상태</dd>-->
+                    <dt>창업 아이템</dt>
+                    <dd>
+                        <span th:text="${bundle.bundleTitle}"></span>
+                    </dd>
+                    <dt>카테고리</dt>
+                    <dd>
+                        <span class="category" th:classappend="${bundle.category != null ? bundle.category.name().toLowerCase() : ''}" th:text="${bundle.category != null ? bundle.category.displayName : 'N/A'}"></span>
+                    </dd>
+                    <dt>상태</dt>
+                    <dd>
+                        <span class="status" th:classappend="${bundle.status.name().toLowerCase()}" th:text="${bundle.status.displayName}"></span>
+                    </dd>
+                    <dt>작성자</dt>
+                    <dd th:text="${bundle.author?.profile?.nickname != null ? bundle.author.profile.nickname : 'N/A'}"></dd>
                     <dt>업로드 날짜</dt>
                     <dd th:text="${#temporals.format(bundle.createdAt, 'yyyy-MM-dd HH:mm')}">2025-08-01 14:00</dd>
+                    <dt>상세 설명</dt>
+                    <dd th:text="${bundle.detailDescription}"></dd>
                 </dl>
             </div>
             <div class="tab-panel">

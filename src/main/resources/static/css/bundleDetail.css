@@ -88,13 +88,21 @@ body {
     list-style: none;
     padding: 0;
     margin: 0 0 12px 0;
+    display: grid;
+    grid-template-columns: 130px 1fr; /* 상세정보와 유사하게 열 맞춤 */
+    gap: 7px 24px; /* 상세정보와 유사하게 간격 설정 */
+    font-size: 15px;
 }
 .bundle-card__meta li {
-    display: flex;
-    align-items: center;
-    font-size: 15px;
-    color: #61677c;
-    margin-bottom: 3px;
+    display: contents; /* li 자체는 그리드 아이템이 되지 않도록 */
+}
+.bundle-card__meta li span:first-child {
+    color: #8e95a5; /* 상세정보 dt 색상 */
+    font-weight: 500;
+}
+.bundle-card__meta li span:last-child {
+    color: #252849; /* 상세정보 dd 색상 */
+    font-weight: 600;
 }
 .bundle-card__meta .icon,
 .icon {
@@ -113,6 +121,47 @@ body {
     color: #304ffe;
     font-weight: 700;
     margin-bottom: 17px;
+}
+
+.bundle-card__funding {
+    margin-top: 20px;
+}
+
+.bundle-card__funding .form-group {
+    margin-bottom: 15px;
+}
+
+.bundle-card__funding label {
+    display: block;
+    font-size: 14px;
+    color: #61677c;
+    margin-bottom: 5px;
+}
+
+.bundle-card__funding .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dde3ed;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.bundle-card__funding .btn-primary {
+    background: linear-gradient(90deg,#2546ff 60%, #4f8bff 100%);
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s;
+    width: 100%;
+}
+
+.bundle-card__funding .btn-primary:hover {
+    background: linear-gradient(90deg,#1830c9 60%, #295fc9 100%);
 }
 
 .tab-section {
@@ -253,4 +302,110 @@ body {
     .bundle-card__info {
         padding: 18px 20px;
     }
+}
+
+/* Category and Status Badges (reused from items.css) */
+.status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 70px;
+    text-align: center;
+}
+
+.status.draft {
+    background: #e0e0e0;
+    color: #616161;
+}
+
+.status.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status.approved {
+    background: #e6f4ea;
+    color: #34a853;
+}
+
+.status.rejected {
+    background: #fce8e6;
+    color: #d93025;
+}
+
+.status.archived {
+    background: #e8eaf6;
+    color: #3949ab;
+}
+
+.status.deleted {
+    background: #eeeeee;
+    color: #9e9e9e;
+}
+
+.category {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    margin: 6px 0;
+    font-weight: 500;
+}
+
+/* 카테고리별 색상 */
+.category.it_software {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.category.ecommerce {
+    background: #fce4ec;
+    color: #c2185b;
+}
+
+.category.education {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.category.healthcare {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.category.media_content {
+    background: #f3e5f5;
+    color: #6a1b9a;
+}
+
+.category.fintech {
+    background: #e0f7fa;
+    color: #00838f;
+}
+
+.category.social_impact {
+    background: #ede7f6;
+    color: #5e35b1;
+}
+
+.category.food {
+    background: #fffde7;
+    color: #f9a825;
+}
+
+.category.fashion_beauty {
+    background: #fce4ec;
+    color: #ad1457;
+}
+
+.category.lifestyle {
+    background: #e1f5fe;
+    color: #039be5;
+}
+
+.category.etc {
+    background: #eceff1;
+    color: #546e7a;
 }
