@@ -147,7 +147,15 @@
 .comment-actions {
     text-align: right;
 }
-
+.btn-comment-delete {
+    background: none;
+    color: #d22;
+    border: none;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 2px;
+}
+.btn-comment-delete:hover { text-decoration: underline; }
 .no-comments { color: #bbb; padding: 8px 0 0 2px; font-size: 14px; }
 
 /* --- 수정 | 삭제 링크 --- */
