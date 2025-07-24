@@ -332,6 +332,7 @@ public class AssetBundleController {
 			@RequestParam(required = false) ItemStatus status,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "12") int size,
+			@RequestParam(required = false) String keyword,
 			Authentication authentication) {
 		if(authentication == null) return new ModelAndView("login");
 
@@ -361,17 +362,17 @@ public class AssetBundleController {
 			filteredStatuses = targetStatuses;
 		}
 
-		// 2. category+status, category만, status만, 둘 다 없을 때 모두 일관성 있게 처리
-		if (category != null) {
-			bundlePage = assetBundleService.getBundlesByCategoryAndStatuses(category, filteredStatuses, pageable);
-		} else {
-			bundlePage = assetBundleService.getBundlesByStatuses(filteredStatuses, pageable);
-		}
+		bundlePage = assetBundleService.searchBundles(category, filteredStatuses, keyword, pageable);
+
+		System.out.println("BundlePage content: " + bundlePage.getContent().size());
+		System.out.println("BundlePage total pages: " + bundlePage.getTotalPages());
+		System.out.println("BundlePage is empty: " + bundlePage.isEmpty());
 
 		ModelAndView mav = new ModelAndView("/bundleList");
 		mav.addObject("bundlePage", bundlePage);
 		mav.addObject("categories", CategoryType.values());
 		mav.addObject("statuses", targetStatuses);
+		mav.addObject("keyword", keyword); // 검색 키워드를 뷰에 전달
 		return mav;
 	}
 

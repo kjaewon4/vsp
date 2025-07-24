@@ -21,7 +21,10 @@
             </nav>
         </div>
         <div class="vsp-header-center">
-            <input type="text" class="search-input" placeholder="아이템 이름과 등록자 이름으로 검색하세요." />
+            <form action="/api/assetbundles/bundleList" method="get" class="search-form">
+                <input type="text" class="search-input" name="keyword" placeholder="아이템 이름과 등록자 이름으로 검색하세요." th:value="${param.keyword}" />
+                <button type="submit" style="display: none;"></button> <!-- Enter 키로 검색 제출을 위한 숨겨진 버튼 -->
+            </form>
         </div>
         <div class="vsp-header-right">
 <!--            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">-->

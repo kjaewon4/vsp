@@ -76,14 +76,14 @@
     <div class="pagination-container" th:if="${bundlePage.totalPages > 1}">
         <ul class="pagination">
             <li th:classappend="${bundlePage.isFirst()} ? 'disabled' : ''">
-                <a th:href="@{/api/assetbundles/bundleList(page=${bundlePage.number - 1}, size=${bundlePage.size}, category=${param.category}, status=${param.status})}">이전</a>
+                <a th:href="@{/api/assetbundles/bundleList(page=${bundlePage.number - 1}, size=${bundlePage.size}, category=${param.category}, status=${param.status}, keyword=${param.keyword})}">이전</a>
             </li>
             <li th:each="i : ${#numbers.sequence(0, bundlePage.totalPages - 1)}"
                 th:classappend="${i == bundlePage.number} ? 'active' : ''">
-                <a th:href="@{/api/assetbundles/bundleList(page=${i}, size=${bundlePage.size}, category=${param.category}, status=${param.status})}" th:text="${i + 1}"></a>
+                <a th:href="@{/api/assetbundles/bundleList(page=${i}, size=${bundlePage.size}, category=${param.category}, status=${param.status}, keyword=${param.keyword})}" th:text="${i + 1}"></a>
             </li>
             <li th:classappend="${bundlePage.isLast()} ? 'disabled' : ''">
-                <a th:href="@{/api/assetbundles/bundleList(page=${bundlePage.number + 1}, size=${bundlePage.size}, category=${param.category}, status=${param.status})}">다음</a>
+                <a th:href="@{/api/assetbundles/bundleList(page=${bundlePage.number + 1}, size=${bundlePage.size}, category=${param.category}, status=${param.status}, keyword=${param.keyword})}">다음</a>
             </li>
         </ul>
     </div>
