@@ -1,0 +1,352 @@
+/* main.css */
+/* 불릿(또는 숫자)을 통째로 제거 */
+ul, ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+li a {
+    text-decoration: none;
+}
+
+/* 히어로 그라데이션 배경 */
+.hero-section {
+    background: linear-gradient(135deg, #6d5bff, #8e78ff);
+}
+
+/* "새로운 시작" 핑크 강조 */
+.text-pink {
+    color: #ff8daa !important;
+}
+
+/* 버튼 스타일 */
+.btn-white {
+    background-color: #fff;
+    border: none;
+}
+.btn-outline-light {
+    color: #fff;
+    border-color: #fff;
+}
+
+/* 코인 획득 버튼 */
+.coin-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+/* 핵심 기능·솔루션 카드 */
+.feature-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.feature-card.primary { background-color: #e3f2fd; }
+.feature-card.success { background-color: #e8f5e9; }
+.feature-card.warning { background-color: #fff9c4; }
+.feature-card.purple  { background-color: #f3e5f5; }
+
+/* 아이콘 원형 배경 & 색상 */
+.icon-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-circle.danger  { background-color: rgba(220,53,69,0.1); color: #dc3545; }
+.icon-circle.warning { background-color: rgba(255,193,7,0.1); color: #ffc107; }
+.icon-circle.info    { background-color: rgba(13,110,253,0.1); color: #0d6efd; }
+
+/* 아이콘 크기 */
+.icon-circle i {
+    font-size: 1.5rem;
+}
+
+
+/* 문제 섹션 */
+/*.problem-section {*/
+/*    background-color: #f9f9f9;*/
+/*}*/
+/*.problem-section .bi {*/
+/*    font-size: 2rem;*/
+/*}*/
+/* 문제 섹션 배경 (원하시는 색이 있으면 조정) */
+.problem-section {
+    background-color: #fafafa;
+}
+
+/* 제목 스타일 새롭게 정의 (vsp-features__title 대신 사용) */
+.section-title {
+    font-size: 2rem;
+    color: #333;
+    /* 위아래 여백을 좀 더 주고 싶으면 조정 */
+}
+
+/* 아이콘 원형 배경 & 색상 (이미 적용하신 것 유지) */
+.icon-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon-circle.danger  { background: rgba(220,53,69,0.1); color: #dc3545; }
+.icon-circle.warning { background: rgba(255,193,7,0.1); color: #ffc107; }
+.icon-circle.info    { background: rgba(13,110,253,0.1); color: #0d6efd; }
+
+.icon-circle i {
+    font-size: 1.5rem;
+}
+
+/* 리스트 텍스트 컬러 및 간격 */
+.problem-section h6 {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.problem-section small {
+    color: #555;
+}
+
+/* CTA 그라데이션 배경 */
+.cta-section {
+    background: linear-gradient(135deg, #2a2644, #8e78ff);
+}
+
+/* 푸터 링크 호버 */
+footer a:hover {
+    text-decoration: underline;
+}
+/* features.css */
+
+/* 전체 섹션 간격 및 폰트 설정 */
+.vsp-features {
+    padding: 80px 5%;
+    font-family: 'Noto Sans KR', sans-serif;
+    text-align: center;
+}
+
+/* 제목 */
+.vsp-features__title {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600 !important;
+}
+.vsp-features__subtitle {
+    font-size: 1rem;
+    margin-bottom: 40px;
+    color: #666;
+}
+
+/* 그리드 레이아웃 */
+.vsp-features__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* 카드 공통 스타일 */
+.feature-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 카드별 배경색 */
+.feature-card--blue   { background-color: #e3f2fd; }
+.feature-card--green  { background-color: #e8f5e9; }
+.feature-card--yellow { background-color: #fff9c4; }
+.feature-card--purple { background-color: #f3e5f5; }
+
+/* 아이콘 크기 */
+.feature-card__icon-circle i {
+    font-size: 1.5rem;
+}
+
+/* 아이콘 원형 컨테이너 공통 */
+.feature-card__icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* 카드별 원형 배경색 및 아이콘 색상 */
+/* 파란 카드 배경(#e3f2fd)보다 진한 파란 계열 */
+.feature-card--blue .feature-card__icon-circle {
+    background-color: #1976d2;
+}
+.feature-card--blue .feature-card__icon-circle i {
+    color: #fff;
+}
+
+/* 연두 카드(#e8f5e9)보다 진한 초록 계열 */
+.feature-card--green .feature-card__icon-circle {
+    background-color: #2e7d32;
+}
+.feature-card--green .feature-card__icon-circle i {
+    color: #fff;
+}
+
+/* 노란 카드(#fff9c4)보다 진한 노랑 계열 */
+.feature-card--yellow .feature-card__icon-circle {
+    background-color: #f9a825;
+}
+.feature-card--yellow .feature-card__icon-circle i {
+    color: #fff;
+}
+
+/* 보라 카드(#f3e5f5)보다 진한 보라 계열 */
+.feature-card--purple .feature-card__icon-circle {
+    background-color: #6a1b9a;
+}
+.feature-card--purple .feature-card__icon-circle i {
+    color: #fff;
+}
+
+/* 아이콘 */
+.feature-card__icon {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    color: #333;
+}
+
+/* 카드 제목 */
+.feature-card__title {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+    color: #222;
+}
+
+/* 카드 설명 */
+.feature-card__desc {
+    color: #555;
+    line-height: 1.5;
+}
+
+/* 섹션 여백 */
+.solution-section {
+}
+
+/* 제목 */
+.section-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #222;
+}
+.section-subtitle {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* 3열 그리드 */
+.solution-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/* 카드 기본 스타일 */
+.solution-card {
+    background-color: transparent;
+    border-radius: 16px;
+    padding: 32px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* 카드별 배경색 — 스크린샷과 일치하도록 정확한 파스텔톤 사용 */
+.solution-card--purple {
+    background-color: #EEF1FF;  /* 연한 연보라 */
+}
+.solution-card--green {
+    background-color: #E8FEE9;  /* 연한 연녹색 */
+}
+.solution-card--yellow {
+    background-color: #FFFBE5;  /* 연한 연노랑 */
+}
+
+/* 아이콘 네모 배경 */
+.solution-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+/* 카드별 색상 */
+/*.solution-card--purple .solution-icon {*/
+/*    background-color: #e9e5fc;*/
+/*    color: #6366f1;*/
+/*}*/
+/*.solution-card--green .solution-icon {*/
+/*    background-color: #e5fcea;*/
+/*    color: #10b981;*/
+/*}*/
+/*.solution-card--yellow .solution-icon {*/
+/*    background-color: #fef6d5;*/
+/*    color: #fbbf24;*/
+/*}*/
+.solution-card--purple .solution-icon {
+    background-color: #6366F1; /* 진한 보라 아이콘 백 */
+    color: #FFF;
+}
+.solution-card--green .solution-icon {
+    background-color: #10B981; /* 진한 초록 아이콘 백 */
+    color: #FFF;
+}
+.solution-card--yellow .solution-icon {
+    background-color: #FBBF24; /* 진한 노랑 아이콘 백 */
+    color: #FFF;
+}
+
+/* 카드 제목 */
+.solution-card h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #222;
+}
+
+/* 항목 리스트 */
+.solution-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.solution-card ul li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    color: #555;
+}
+.solution-card ul li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 2px;
+    color: #10b981;
+    font-weight: bold;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    /* 부트스트랩에서 넣은 font-weight:500 을 UA(User Agent) 기본값(또는 상속값)으로 되돌립니다 */
+    font-weight: revert !important;
+}

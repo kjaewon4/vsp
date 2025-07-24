@@ -1,30 +1,286 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: commonHead}">
-    <title>Home</title>
+    <title>VSP | 가상 창업 박람회 플랫폼</title>
 </head>
+<link rel="stylesheet" th:href="@{/css/home.css}" />
 <body style="padding-top: 72px;">
 
 <header th:replace="fragments/header :: commonHeader"></header>
-
-<!--<div class="container mt-5 background-[#fafbff]">-->
-<!--    <div class="title-section">-->
-<!--        <h2>창업 아이템 존</h2>-->
-<!--        <p>다양한 창업 아이템을 둘러보세요</p>-->
-<!--    </div>-->
-
-<!--    <div class="row">-->
-<!--        <div class="col-md-4 mb-4" th:each="bundle : ${assetBundles}">-->
-<!--            <div class="card" style="background: #fff; border-radius: 15px; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); padding: 26px 30px;">-->
-<!--                <div class="card-body">-->
-<!--                    <h5 class="card-title"><a th:href="@{/api/assetbundles/{id}(id=${bundle.id})}" th:text="${bundle.bundleTitle}">Bundle Title</a></h5>-->
-<!--                    <p class="card-text" th:text="${bundle.bundleDescription}">Bundle Description</p>-->
-<!--                    <p class="card-text"><small class="text-muted">Uploaded: <span th:text="${#temporals.format(bundle.createdAt, 'yyyy-MM-dd HH:mm')}"></span></small></p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+<!--<div class="collapse navbar-collapse" id="vspNavbar">-->
+<!--    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">-->
+<!--        <li class="nav-item"><a class="nav-link" th:href="@{/#service}">서비스 소개</a></li>-->
+<!--        <li class="nav-item"><a class="nav-link" th:href="@{/#howto}">사용 방법</a></li>-->
+<!--        <li class="nav-item"><a class="nav-link" th:href="@{/#faq}">자주 묻는 질문</a></li>-->
+<!--        <li class="nav-item"><a class="nav-link" th:href="@{/#contact}">문의하기</a></li>-->
+<!--    </ul>-->
+<!--    <a class="btn btn-primary ms-lg-3" th:href="@{/login}">로그인</a>-->
 <!--</div>-->
+</div>
 
+<!-- 히어로 섹션 -->
+<section class="hero-section text-white position-relative">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <!-- 텍스트 -->
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold">
+                    가상 창업의<br/>
+                    <span class="text-pink">새로운 시작</span>
+                </h1>
+                <p class="lead mb-4">
+                    메타버스에서 창업 아이템을 체험하고, 실시간 피드백을 받으며,<br/>
+                    실패 리스크를 사전에 검증하는 혁신적인 서비스
+                </p>
+                <a th:href="@{/api/assetbundles/bundleList}" class="btn btn-white btn-lg text-primary me-3">
+                    부스 둘러보기
+                </a>
+                <a th:href="@{/api/assetbundles/uploadForm}" class="btn btn-outline-light btn-lg">
+                    부스 등록하기
+                </a>
+            </div>
+            <!-- 이미지 + 코인 버튼 -->
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img
+                            th:src="@{/img/main.png}"
+                            alt="VSP 가상 박람회"
+                            class="img-fluid rounded-3 shadow-lg"/>
+<!--                    <a th:href="@{/coin}" class="btn btn-warning rounded-pill coin-btn shadow-sm">-->
+<!--                        <i class="bi bi-coin me-1"></i> 코인 획득-->
+<!--                    </a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- VSP 핵심 기능 섹션 -->
+<section class="vsp-features">
+    <h2 class="vsp-features__title">VSP 핵심 기능</h2>
+    <p class="vsp-features__subtitle">
+        창업의 모든 과정을 가상공간에서 안전하게 체험하세요
+    </p>
+    <div class="vsp-features__grid">
+        <!-- 카드 1 -->
+        <div class="feature-card feature-card--blue">
+            <div class="feature-card__icon-circle">
+                <i class="bi bi-shop"></i>
+            </div>
+            <h3 class="feature-card__title">가상 창업 부스</h3>
+            <p class="feature-card__desc">
+                3D 가상공간에서 창업 아이템을 전시하고<br/>
+                관람자들과 실시간 소통
+            </p>
+        </div>
+        <!-- 카드 2 -->
+        <div class="feature-card feature-card--green">
+            <div class="feature-card__icon-circle">
+                <i class="bi bi-chat-dots"></i>
+            </div>
+            <h3 class="feature-card__title">실시간 피드백</h3>
+            <p class="feature-card__desc">
+                좋아요·댓글·별점을 통한 즉시<br/>
+                피드백으로 시장 반응 검증
+            </p>
+        </div>
+        <!-- 카드 3 -->
+        <div class="feature-card feature-card--yellow">
+            <div class="feature-card__icon-circle">
+                <i class="bi bi-stack"></i>
+            </div>
+            <h3 class="feature-card__title">코인 보상 시스템</h3>
+            <p class="feature-card__desc">
+                활동 기여도에 따른 코인 지급으로<br/>
+                경제적 참여 동기 제공
+            </p>
+        </div>
+        <!-- 카드 4 -->
+        <div class="feature-card feature-card--purple">
+            <div class="feature-card__icon-circle">
+                <i class="bi bi-controller"></i>
+            </div>
+            <h3 class="feature-card__title">미니게임</h3>
+            <p class="feature-card__desc">
+                창업 분야별 미니게임을 통한<br/>
+                재미있는 코인 획득 방법
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- VSP가 해결하는 문제 -->
+<section class="problem-section py-5">
+    <div class="container">
+
+        <!-- 2컬럼 그리드 (gap 조절 위해 g-5 추가) -->
+        <div class="row g-5 align-items-center">
+            <!-- 왼쪽: 리스트 -->
+            <div class="col-md-6">
+                <!-- 제목 -->
+                <h2 class="section-title mb-5">VSP가 해결하는 문제</h2>
+                <ul class="list-unstyled mb-0">
+                    <li class="d-flex mb-4">
+                        <div class="icon-circle danger me-3">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">높은 창업 실패율</h5>
+                            <p>대학생 창업의 90% 이상 시장 진입 후 실패</p>
+                        </div>
+                    </li>
+                    <li class="d-flex mb-4">
+                        <div class="icon-circle warning me-3">
+                            <i class="bi bi-currency-dollar"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">높은 초기 비용</h5>
+                            <p>실제 창업을 위한 막대한 초기 투자 비용</p>
+                        </div>
+                    </li>
+                    <li class="d-flex">
+                        <div class="icon-circle info me-3">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">피드백 부재</h5>
+                            <p>아이디어 단계에서 실제 소비자 반응을 확인하기 어려움</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 오른쪽: 이미지 -->
+            <div class="col-md-5 text-center">
+                <img
+                        th:src="@{/img/main_sol.png}"
+                        alt="문제 이미지"
+                        class="img-fluid rounded shadow-lg"
+                />
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- VSP 솔루션 섹션 -->
+<section class="solution-section py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-2">VSP 솔루션</h2>
+        <p class="section-subtitle text-center mb-5">
+            가상공간에서 안전하게 창업을 체험하고 검증하세요
+        </p>
+        <div class="solution-grid">
+            <!-- 카드 1: 메타버스 체험 -->
+            <div class="solution-card solution-card--purple">
+                <div class="solution-icon">
+                    <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="32" height="32"
+                            fill="white"
+                            viewBox="0 0 16 16"
+                            class="bi bi-vr"
+                    >
+                        <path d="M3 12V4a1 1 0 0 1 1-1h2.5V2H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5v-1H4a1 1 0 0 1-1-1"/>
+                        <path d="M9.5 13v1H12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H9.5v1H12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1"/>
+                        <path d="M8 16a.5.5 0 0 1-.5-.5V.5a.5.5 0 0 1 1 0v15a.5.5 0 0 1-.5.5"/>
+                    </svg>
+                </div>
+                <h5>메타버스 체험</h5>
+                <ul>
+                    <li>3D 가상 부스 구축</li>
+                    <li>다중 사용자 동시 접속</li>
+                    <li>실시간 상호작용</li>
+                </ul>
+            </div>
+            <!-- 카드 2: 사전 시장 검증 -->
+            <div class="solution-card solution-card--green">
+                <div class="solution-icon">
+                    <i class="bi bi-bar-chart-fill fs-2"></i>
+                </div>
+                <h5>사전 시장 검증</h5>
+                <ul>
+                    <li>실시간 피드백 수집</li>
+                    <li>데이터 기반 분석</li>
+                    <li>리스크 사전 감지</li>
+                </ul>
+            </div>
+            <!-- 카드 3: 지역 상생 경제 -->
+            <div class="solution-card solution-card--yellow">
+                <div class="solution-icon">
+                    <i class="bi bi-heart-fill fs-2"></i>
+                </div>
+                <h5>지역 상생 경제</h5>
+                <ul>
+                    <li>코인‑상품권 연계</li>
+                    <li>지역 경제 활성화</li>
+                    <li>청년 창업 지원</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- 최종 CTA -->
+<section class="cta-section text-white text-center position-relative py-5">
+    <div class="container">
+        <h2 class="mb-4">지금 VSP와 함께 시작하세요</h2>
+        <p class="lead mb-4">
+            가상공간에서 안전하게 창업을 체험하고,<br/>
+            성공 가능성을 높여보세요
+        </p>
+        <a th:href="@{/api/assetbundles/bundleList}" class="btn btn-light btn-lg me-3">부스 둘러보기</a>
+        <a th:href="@{/api/assetbundles/uploadForm}" class="btn btn-outline-light btn-lg">부스 등록하기</a>
+    </div>
+</section>
+
+<!-- 푸터 -->
+<footer class="bg-dark text-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <h5>VSP</h5>
+                <p class="small">가상 창업 박람회 플랫폼 VSP를 통해 안전하게 창업을 체험하세요.</p>
+            </div>
+            <div class="col-md-3 mb-4">
+                <h6>플랫폼</h6>
+                <ul class="list-unstyled small">
+                    <li><a class="text-light" th:href="@{/booth}">가상 부스</a></li>
+                    <li><a class="text-light" th:href="@{/feedback}">피드백 시스템</a></li>
+                    <li><a class="text-light" th:href="@{/coin}">코인 보상</a></li>
+                    <li><a class="text-light" th:href="@{/mini-games}">미니게임</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-4">
+                <h6>지원</h6>
+                <ul class="list-unstyled small">
+                    <li><a class="text-light" th:href="@{/docs}">도움말</a></li>
+                    <li><a class="text-light" th:href="@{/api}">Open API</a></li>
+                    <li><a class="text-light" th:href="@{/community}">커뮤니티</a></li>
+                </ul>
+            </div>
+            <!-- fragments/footer.html -->
+            <div class="col-md-3">
+                <h6>연락처</h6>
+                <p class="small mb-1">
+                    <i class="bi bi-envelope-fill footer-icon me-2"></i>
+                    contact@vsp.co.kr
+                </p>
+                <p class="small mb-1">
+                    <i class="bi bi-telephone-fill footer-icon me-2"></i>
+                    백석대학교 전화번호
+                </p>
+                <p class="small">
+                    <i class="bi bi-geo-alt-fill footer-icon me-2"></i>
+                    충남 천안시 동남구
+                </p>
+            </div>
+
+        </div>
+        <p class="text-center small mt-4 mb-0">&copy; 2025. All rights reserved.</p>
+    </div>
+</footer>
+<!-- 프로젝트 커스텀 JS -->
+<script th:src="@{/js/home.js}"></script>
 </body>
 </html>
