@@ -52,8 +52,8 @@
 .sidebar-menu {
     display: flex;
     flex-direction: column;
-    gap: 16px;
 }
+
 .sidebar-menu-item {
     display: block;
     font-size: 1.2rem;
