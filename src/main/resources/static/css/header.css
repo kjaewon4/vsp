@@ -1,3 +1,6 @@
+body {
+    font-family: Arial, sans-serif;
+}
 .vsp-header {
     display: flex;
     align-items: center;
