@@ -24,7 +24,7 @@ public interface AssetBundleRepository extends JpaRepository<AssetBundleEntity, 
     Page<AssetBundleEntity> findByBundleTitleContainingIgnoreCaseOrAuthorUsernameContainingIgnoreCaseAndStatusIn(String bundleTitleKeyword, String authorUsernameKeyword, List<ItemStatus> statuses, Pageable pageable);
 
     Page<AssetBundleEntity> findByCategoryAndBundleTitleContainingIgnoreCaseOrAuthorUsernameContainingIgnoreCaseAndStatusIn(CategoryType category, String bundleTitleKeyword, String authorUsernameKeyword, List<ItemStatus> statuses, Pageable pageable);
-    List<AssetBundleEntity> findByAuthor(User author);
+    Page<AssetBundleEntity> findByAuthorAndStatusIn(User author, List<ItemStatus> statuses, Pageable pageable);
 
     Page<AssetBundleEntity> findByCategoryAndStatusIn(CategoryType category, List<ItemStatus> statuses, Pageable pageable);
 

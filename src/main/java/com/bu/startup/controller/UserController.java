@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,30 +32,31 @@ public class UserController {
     private final UserService userService;
     private final AssetBundleService assetBundleService;
 
-    @GetMapping("/mypage")
-    public String mypage(Authentication authentication, Model model) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return "redirect:/login";
-        }
-
-        User currentUser = userService.getUserByUsername(authentication.getName());
-        if (currentUser == null) {
-            return "redirect:/login";
-        }
-
-        UserProfile userProfile = userService.getUserProfile(currentUser);
-        List<AssetBundleEntity> uploadedBundles = assetBundleService.getBundlesByAuthor(currentUser);
-        List<AssetBundleEntity> fundedBundles = assetBundleService.getFundedBundles(currentUser);
-
-        model.addAttribute("user", currentUser);
-        model.addAttribute("profile", userProfile);
-        model.addAttribute("wallet", currentUser.getWalletAddress());
-        model.addAttribute("balance", currentUser.getBalance());
-        model.addAttribute("uploadedBundles", uploadedBundles);
-        model.addAttribute("fundedBundles", fundedBundles);
-
-        return "mypage";
-    }
+//    @GetMapping("/mypage")
+//    public String mypage(Authentication authentication, Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+//        if (authentication == null || !authentication.isAuthenticated()) {
+//            return "redirect:/login";
+//        }
+//
+//        User currentUser = userService.getUserByUsername(authentication.getName());
+//        if (currentUser == null) {
+//            return "redirect:/login";
+//        }
+//
+//        UserProfile userProfile = userService.getUserProfile(currentUser);
+//        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+//        Page<AssetBundleEntity> uploadedBundlesPage = assetBundleService.getBundlesByAuthorAndStatuses(currentUser, Arrays.asList(ItemStatus.values()), pageable);
+//        List<AssetBundleEntity> fundedBundles = assetBundleService.getFundedBundles(currentUser);
+//
+//        model.addAttribute("user", currentUser);
+//        model.addAttribute("profile", userProfile);
+//        model.addAttribute("wallet", currentUser.getWalletAddress());
+//        model.addAttribute("balance", currentUser.getBalance());
+//        model.addAttribute("uploadedBundlesPage", uploadedBundlesPage);
+//        model.addAttribute("fundedBundles", fundedBundles);
+//
+//        return "mypage";
+//    }
 
     @PostMapping("/mypage/updateProfile")
     public String updateProfile(

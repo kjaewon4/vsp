@@ -180,8 +180,9 @@ public class AssetBundleService {
         }
     }
 
-    public List<AssetBundleEntity> getBundlesByAuthor(User author) {
-        return assetBundleRepository.findByAuthor(author);
+    public Page<AssetBundleEntity> getBundlesByAuthorAndStatuses(User author, List<ItemStatus> statuses, Pageable pageable) {
+        if (statuses.isEmpty()) return Page.empty();
+        return assetBundleRepository.findByAuthorAndStatusIn(author, statuses, pageable);
     }
 
     // 펀딩 기능이 없으므로 임시 스텁

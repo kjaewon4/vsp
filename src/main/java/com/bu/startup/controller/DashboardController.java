@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,11 +80,12 @@ public class DashboardController {
     }
 
     @GetMapping("/user/uploadedBundles")
-    public String getUserUploadedBundlesFragment(Authentication authentication, Model model) {
+    public String getUserUploadedBundlesFragment(Authentication authentication, Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         User currentUser = userService.getUserByUsername(authentication.getName());
         model.addAttribute("profile", currentUser);
-        List<AssetBundleEntity> uploadedBundles = assetBundleService.getBundlesByAuthor(currentUser);
-        model.addAttribute("uploadedBundles", uploadedBundles);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<AssetBundleEntity> uploadedBundlesPage = assetBundleService.getBundlesByAuthorAndStatuses(currentUser, Arrays.asList(ItemStatus.values()), pageable);
+        model.addAttribute("uploadedBundlesPage", uploadedBundlesPage);
         model.addAttribute("categories", CategoryType.values()); // bundleList.html 형식에 필요
         model.addAttribute("statuses", ItemStatus.values()); // bundleList.html 형식에 필요
         return "fragments/dashboard/user_uploaded_bundles_fragment";
@@ -124,6 +126,19 @@ public class DashboardController {
         model.addAttribute("categories", CategoryType.values());
         model.addAttribute("statuses", ItemStatus.values());
         return "fragments/dashboard/user_liked_bundles_fragment";
+    }
+
+    @GetMapping("/user/approvedBundles")
+    public String getUserApprovedBundlesFragment(Authentication authentication, Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        User currentUser = userService.getUserByUsername(authentication.getName());
+        model.addAttribute("profile", currentUser);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        List<ItemStatus> approvedAndArchived = Arrays.asList(ItemStatus.APPROVED, ItemStatus.ARCHIVED);
+        Page<AssetBundleEntity> approvedBundlesPage = assetBundleService.getBundlesByAuthorAndStatuses(currentUser, approvedAndArchived, pageable);
+        model.addAttribute("approvedBundlesPage", approvedBundlesPage);
+        model.addAttribute("categories", CategoryType.values());
+        model.addAttribute("statuses", approvedAndArchived);
+        return "fragments/dashboard/user_approved_bundles_fragment";
     }
 
     // --- Admin Dashboard Fragments ---

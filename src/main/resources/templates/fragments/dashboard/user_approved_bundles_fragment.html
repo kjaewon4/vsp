@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="user_approved_bundles_fragment">
+    <div class="title-section">
+        <h2>승인된 번들</h2>
+        <p>회원님이 요청한 번들 중 승인되거나 아카이브된 번들 목록입니다.</p>
+    </div>
+
+    <!-- 번들 목록을 동적으로 표시 -->
+    <div th:each="bundle : ${approvedBundlesPage.content}" class="item-card">
+        <a th:href="@{/api/assetbundles/{id}(id=${bundle.id})}" style="text-decoration: none; color: inherit; display: block; height: 100%;">
+            <div class="item-header">
+                <h3 th:text="${bundle.bundleTitle}">번들 제목</h3>
+                <span class="status" th:classappend="${bundle.status.name().toLowerCase()}" th:text="${bundle.status.displayName}">상태</span>
+            </div>
+            <p class="author">by <span th:text="${bundle.author?.profile?.nickname != null ? bundle.author.profile.nickname : '-'}">사용자 닉네임</span></p>
+            <span class="category" th:classappend="${bundle.category != null ? bundle.category.name().toLowerCase() : '-'}" th:text="${bundle.category != null ? bundle.category.displayName : '-'}">카테고리</span>
+            <p class="desc" th:text="${bundle.bundleDescription}">번들 설명</p>
+            <div class="item-footer">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+                <span th:text="${bundle.views} + ' views'">조회수</span>
+                <span>·</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span th:text="${#temporals.format(bundle.createdAt, 'yyyy-MM-dd')}">생성일</span>
+            </div>
+        </a>
+    </div>
+
+    <div th:if="${approvedBundlesPage.empty}" style="font-size: 14px; color: #666; text-align: center; margin-top: 20px;">
+        승인된 번들이 존재하지 않습니다.
+    </div>
+
+    <!-- 페이지네이션 -->
+    <div class="pagination-container" th:if="${approvedBundlesPage.totalPages > 1}">
+        <ul class="pagination">
+            <li th:classappend="${approvedBundlesPage.isFirst()} ? 'disabled' : ''">
+                <a th:href="@{/dashboard/user/approvedBundles(page=${approvedBundlesPage.number - 1}, size=${approvedBundlesPage.size})}">이전</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, approvedBundlesPage.totalPages - 1)}"
+                th:classappend="${i == approvedBundlesPage.number} ? 'active' : ''">
+                <a th:href="@{/dashboard/user/approvedBundles(page=${i}, size=${approvedBundlesPage.size})}" th:text="${i + 1}"></a>
+            </li>
+            <li th:classappend="${approvedBundlesPage.isLast()} ? 'disabled' : ''">
+                <a th:href="@{/dashboard/user/approvedBundles(page=${approvedBundlesPage.number + 1}, size=${approvedBundlesPage.size})}">다음</a>
+            </li>
+        </ul>
+    </div>
+</div>
+</html>

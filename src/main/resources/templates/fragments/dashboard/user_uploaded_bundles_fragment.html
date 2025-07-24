@@ -2,11 +2,11 @@
     <div class="container">
         <div class="title-section">
             <h2>내가 요청한 번들</h2>
-            <p>내가 업로드한 번들 목록입니다.</p>
+            <p>내가 관리자에게 업로드 요청한 번들 목록입니다.</p>
         </div>
 
         <!-- 번들 목록을 동적으로 표시 -->
-        <div th:each="bundle : ${uploadedBundles}" class="item-card">
+        <div th:each="bundle : ${uploadedBundlesPage.content}" class="item-card">
             <a th:href="@{/api/assetbundles/{id}(id=${bundle.id})}" style="text-decoration: none; color: inherit; display: block; height: 100%;">
                 <div class="item-header">
                     <h3 th:text="${bundle.bundleTitle}">번들 제목</h3>
@@ -33,8 +33,24 @@
             </a>
         </div>
 
-        <div th:if="${#lists.isEmpty(uploadedBundles)}" style="font-size: 14px; color: #666; text-align: center; margin-top: 20px;">
+        <div th:if="${uploadedBundlesPage.empty}" style="font-size: 14px; color: #666; text-align: center; margin-top: 20px;">
             업로드한 번들이 존재하지 않습니다.
+        </div>
+
+        <!-- 페이지네이션 -->
+        <div class="pagination-container" th:if="${uploadedBundlesPage.totalPages > 1}">
+            <ul class="pagination">
+                <li th:classappend="${uploadedBundlesPage.isFirst()} ? 'disabled' : ''">
+                    <a th:href="@{/dashboard/user/uploadedBundles(page=${uploadedBundlesPage.number - 1}, size=${uploadedBundlesPage.size})}">이전</a>
+                </li>
+                <li th:each="i : ${#numbers.sequence(0, uploadedBundlesPage.totalPages - 1)}"
+                    th:classappend="${i == uploadedBundlesPage.number} ? 'active' : ''">
+                    <a th:href="@{/dashboard/user/uploadedBundles(page=${i}, size=${uploadedBundlesPage.size})}" th:text="${i + 1}"></a>
+                </li>
+                <li th:classappend="${uploadedBundlesPage.isLast()} ? 'disabled' : ''">
+                    <a th:href="@{/dashboard/user/uploadedBundles(page=${uploadedBundlesPage.number + 1}, size=${uploadedBundlesPage.size})}">다음</a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
